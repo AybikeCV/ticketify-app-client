@@ -11,6 +11,9 @@ import About from "./pages/About"
 import AllConcerts from "./pages/AllConcerts"
 import ConcertDetail from "./pages/ConcertDetail"
 import AllVenues from "./pages/AllVenues"
+import VenueDetail from "./pages/VenueDetail"
+import Login from "./pages/auth/Login"
+import Signup from "./pages/auth/SignUp"
 
 function App() {
  
@@ -28,6 +31,9 @@ function App() {
           <Route path="/concerts" element={<AllConcerts />} />
           <Route path="/concerts/:id" element={<ConcertDetail />} />
           <Route path="/venues" element={<AllVenues />} />
+          <Route path="/venues/:id" element={<VenueDetail />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
 
            {/* 404 */}
           <Route path="*" element={<NotFound />} />

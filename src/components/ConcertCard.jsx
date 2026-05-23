@@ -26,9 +26,11 @@ function ConcertCard({ concert }) {
           {new Date(concert.date).toLocaleDateString()}
         </p>
 
+        
         <p className="text-zinc-500 text-sm">
-          {concert.venue.name}
+        <Link to={`/venues/${concert.venue._id}`}>{concert.venue.name}</Link>  
         </p>
+       
 
         <div className="flex items-center justify-between mt-5">
 

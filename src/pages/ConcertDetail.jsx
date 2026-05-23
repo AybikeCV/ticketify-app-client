@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 import { ConcertContext } from "../contexts/concertapi.context";
 
@@ -50,8 +50,10 @@ function ConcertDetail() {
 
           <p>
             <span className="text-zinc-500">Venue:</span>{" "}
-            {concert.venue.name}
+            <Link to={`/venues/${concert.venue._id}`}>{concert.venue.name}</Link>
           </p>
+
+
 
           <p>
             <span className="text-zinc-500">Date:</span>{" "}

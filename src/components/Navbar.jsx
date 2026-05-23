@@ -1,9 +1,31 @@
-import { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { useState, useContext } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
+import { AuthContext } from "../contexts/auth.context";
 
 function Navbar() {
   const [open, setOpen] = useState(false);
+
+  const navigate = useNavigate()
+
+  const { setIsLoggedIn, setLoggedUserId, isLoggedIn, setLoggedUserRole } = useContext(AuthContext)
+
+  function handleLogout(e) {
+    e.preventDefault()
+
+    // destroying the token
+    localStorage.removeItem("authToken")
+
+    // revert the states to their initial value
+    setIsLoggedIn(false)
+    setLoggedUserId(null)
+    setLoggedUserRole(null)
+
+    // navigate the user to a public page
+    navigate("/login")
+
+  }
+
 
   return (
     <nav className="bg-zinc-950 border-b border-zinc-800 text-zinc-100">

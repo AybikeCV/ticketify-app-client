@@ -8,7 +8,7 @@ import VenueCard from "../components/VenueCard"
 function AllVenues() {
 
 
-    const [AllVenues, setAllVenues] = useState (null)
+    const [allVenues, setAllVenues] = useState (null)
 
     useEffect(() => {
         getVenueData()
@@ -25,7 +25,7 @@ const getVenueData = async () => {
     }
   };
 
-if (!AllVenues) {
+if (!allVenues) {
     return (
       <div className="text-center py-20 text-zinc-400">
         Loading venues...
@@ -43,7 +43,7 @@ if (!AllVenues) {
 
       <div className="max-w-7xl mx-auto grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
         
-        {AllVenues.map((venue) => (
+        {allVenues.map((venue) => (
           <VenueCard
             key={venue._id}
             venue={venue}
