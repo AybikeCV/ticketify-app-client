@@ -40,6 +40,13 @@ function Navbar() {
           </NavLink>
 
           <NavLink
+            to="/venues"
+            className="text-zinc-400 hover:text-white transition"
+          >
+            Venues
+          </NavLink>
+
+          <NavLink
             to="/login"
             className="text-zinc-400 hover:text-white transition"
           >

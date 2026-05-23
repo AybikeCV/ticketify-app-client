@@ -1,12 +1,15 @@
-import "./App.css"
 import "./index.css"
 import { Routes, Route} from "react-router-dom"
 import Navbar from "./components/Navbar"
-import Home from "./pages/Home"
-import About from "./pages/About"
 import NotFound from "./pages/NotFound"
 import Footer from "./components/Footer"
+import ConcertCard from "./components/ConcertCard"
+import VenueCard from "./components/VenueCard"
 
+import Home from "./pages/Home"
+import About from "./pages/About"
+import AllConcerts from "./pages/AllConcerts"
+import AllVenues from "./pages/AllVenues"
 
 function App() {
  
@@ -21,8 +24,10 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
+          <Route path="/concerts" element={<AllConcerts />} />
+          <Route path="/venues" element={<AllVenues />} />
 
-          {/* 404 */}
+           {/* 404 */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
