@@ -9,6 +9,7 @@ import VenueCard from "./components/VenueCard"
 import Home from "./pages/Home"
 import About from "./pages/About"
 import AllConcerts from "./pages/AllConcerts"
+import ConcertDetail from "./pages/ConcertDetail"
 import AllVenues from "./pages/AllVenues"
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/concerts" element={<AllConcerts />} />
+          <Route path="/concerts/:id" element={<ConcertDetail />} />
           <Route path="/venues" element={<AllVenues />} />
 
            {/* 404 */}

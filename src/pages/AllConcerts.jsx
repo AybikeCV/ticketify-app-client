@@ -1,31 +1,15 @@
 import "../index.css"
-import service from "../services/index.services"
-import { useEffect, useState } from "react"
-import axios from "axios"
+import { useContext } from "react"
+import { ConcertContext } from "../contexts/concertapi.context"
 import { useNavigate } from "react-router-dom"
 import ConcertCard from "../components/ConcertCard"
 
 function AllConcerts() {
 
 
-    const [AllConcerts, setAllConcerts] = useState (null)
+    const { allConcerts } = useContext(ConcertContext);
 
-    useEffect(() => {
-        getConcertData()
-    }, [])
-
-const getConcertData = async () => {
-    try {
-      const response = await service.get("/concerts");
-      console.log(response.data);
-      setAllConcerts(response.data);
-    } catch (error) {
-      console.log(error);
-      
-    }
-  };
-
-if (!AllConcerts) {
+  if (!allConcerts) {
     return (
       <div className="text-center py-20 text-zinc-400">
         Loading concerts...
@@ -33,17 +17,16 @@ if (!AllConcerts) {
     );
   }
 
+  return (
+    <div className="bg-zinc-950 min-h-screen px-4 py-10">
 
-    return (
-        <div className="bg-zinc-950 min-h-screen px-4 py-10">
-
-      <h1 className="text-4xl font-bold text-zinc-100 mb-10 text-center">
+      <h1 className="text-4xl font-bold text-center mb-10">
         Concerts
       </h1>
 
       <div className="max-w-7xl mx-auto grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        
-        {AllConcerts.map((concert) => (
+
+        {allConcerts.map((concert) => (
           <ConcertCard
             key={concert._id}
             concert={concert}
@@ -51,8 +34,9 @@ if (!AllConcerts) {
         ))}
 
       </div>
+
     </div>
-    )
+  );
 
 }
 

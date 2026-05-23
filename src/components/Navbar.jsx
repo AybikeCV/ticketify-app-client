@@ -101,6 +101,13 @@ function Navbar() {
           </NavLink>
 
           <NavLink
+            to="/venues"
+            className="block text-zinc-400"
+          >
+            Venues
+          </NavLink>
+
+          <NavLink
             to="/login"
             onClick={() => setOpen(false)}
             className="block text-zinc-400"

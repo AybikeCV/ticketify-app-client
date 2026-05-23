@@ -18,7 +18,7 @@ function ConcertCard({ concert }) {
           {concert.title}
         </h2>
 
-        <p className="text-[#1B5E4A] mt-1">
+        <p className="text-xl font-semibold text-[#1B5E4A] mt-1">
           {concert.artist}
         </p>
 
@@ -27,7 +27,7 @@ function ConcertCard({ concert }) {
         </p>
 
         <p className="text-zinc-500 text-sm">
-          {concert.venue?.name}
+          {concert.venue.name}
         </p>
 
         <div className="flex items-center justify-between mt-5">

@@ -1,5 +1,9 @@
 import React from "react"
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { ConcertContext } from "../contexts/concertapi.context";
+import ConcertCard from "../components/ConcertCard";
+import ConcertFeaturedSlider from "../components/ConcertFeaturedSlider"
 
 function Home() {
   return (
@@ -24,6 +28,12 @@ function Home() {
           </Link>
         </div>
       </section>
+<section>
+        <div className="max-w-6xl mx-auto px-4">
+        <ConcertFeaturedSlider />
+      </div>
+</section>
+    
 
       {/* SIMPLE CARDS */}
       <section className="max-w-5xl mx-auto px-4 grid md:grid-cols-3 gap-4 pb-20">

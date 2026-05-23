@@ -1,13 +1,14 @@
 import { Link } from "react-router-dom";
 
+
 function VenueCard({ venue }) {
   return (
     <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden hover:border-[#1B5E4A]/40 transition">
 
       {/* IMAGE */}
-      <img
-        src={venue.image}
-        alt={venue.title}
+     <img
+        src={venue.image} 
+        alt={venue.name}
         className="h-56 w-full object-cover"
       />
 
@@ -15,37 +16,27 @@ function VenueCard({ venue }) {
       <div className="p-5">
 
         <h2 className="text-xl font-semibold text-zinc-100">
-          {venue.title}
+          {venue.name}
         </h2>
 
-        <p className="text-[#1B5E4A] mt-1">
-          {concert.artist}
+        <p className="text-zinc-400 mt-2">
+          {venue.city}
         </p>
 
-        <p className="text-zinc-400 text-sm mt-3">
-          {new Date(concert.date).toLocaleDateString()}
+        <p className="text-zinc-500 text-sm mt-3">
+        Capacity: {venue.capacity}
         </p>
 
-        <p className="text-zinc-500 text-sm">
-          {concert.venue?.name}
-        </p>
-
-        <div className="flex items-center justify-between mt-5">
-
-          <span className="text-zinc-100 font-medium">
-            €{concert.price}
-          </span>
-
-          <Link
-            to={`/concerts/${concert._id}`}
-            className="px-4 py-2 rounded-lg bg-[#1B5E4A]/20 border border-[#1B5E4A]/40 hover:bg-[#1B5E4A]/30 transition"
+        <Link
+            to={`/venues/${venue._id}`}
+            className="m-50 px-4 py-2 rounded-lg bg-[#1B5E4A]/20 border border-[#1B5E4A]/40 hover:bg-[#1B5E4A]/30 transition"
           >
             Details
           </Link>
 
         </div>
       </div>
-    </div>
+    
   );
 }
 
