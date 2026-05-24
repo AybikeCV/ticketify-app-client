@@ -5,6 +5,8 @@ import NotFound from "./pages/NotFound"
 import Footer from "./components/Footer"
 import ConcertCard from "./components/ConcertCard"
 import VenueCard from "./components/VenueCard"
+import ProtectedRoute from "./components/ProtectedRoute"
+import AdminRoute from "./components/AdminRoute"
 
 import Home from "./pages/Home"
 import About from "./pages/About"
@@ -14,6 +16,8 @@ import AllVenues from "./pages/AllVenues"
 import VenueDetail from "./pages/VenueDetail"
 import Login from "./pages/auth/Login"
 import Signup from "./pages/auth/SignUp"
+import Profile from "./pages/auth/Profile"
+import AdminDashboard from "./pages/auth/AdminDashboard"
 
 function App() {
  
@@ -34,6 +38,8 @@ function App() {
           <Route path="/venues/:id" element={<VenueDetail />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/profile" element={<ProtectedRoute> <Profile /> </ProtectedRoute>}/>
+        <Route path="/dashboard" element={<AdminRoute> <AdminDashboard /> </AdminRoute>}/>
 
            {/* 404 */}
           <Route path="*" element={<NotFound />} />

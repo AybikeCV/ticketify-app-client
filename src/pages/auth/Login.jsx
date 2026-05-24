@@ -38,10 +38,15 @@ function Login() {
       setLoggedUserId(response.data.payload._id)
       setLoggedUserRole(response.data.payload.role)
 
+if (response.data.payload.role === "admin") {
 
-      console.log(response.data)
+  navigate("/dashboard");
 
-      navigate("/private-page-example")
+} else {
+
+  navigate("/profile");
+}
+      
 
     } catch (error) {
       console.log(error)

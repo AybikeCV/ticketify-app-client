@@ -8,7 +8,9 @@ function Navbar() {
 
   const navigate = useNavigate()
 
-  const { setIsLoggedIn, setLoggedUserId, isLoggedIn, setLoggedUserRole } = useContext(AuthContext)
+  const { setIsLoggedIn, setLoggedUserId, isLoggedIn, loggedUserRole, setLoggedUserRole, lougoutUser } = useContext(AuthContext)
+
+  
 
   function handleLogout(e) {
     e.preventDefault()
@@ -68,19 +70,59 @@ function Navbar() {
             Venues
           </NavLink>
 
-          <NavLink
-            to="/login"
-            className="text-zinc-400 hover:text-white transition"
-          >
-            Login
-          </NavLink>
+          {!isLoggedIn ? (
 
-          <NavLink
-            to="/signup"
-            className="px-4 py-2 rounded-lg bg-[#1B5E4A]/20 border border-[#1B5E4A]/40 hover:bg-[#1B5E4A]/30 transition"
-          >
-            Sign Up
-          </NavLink>
+            <>
+
+              <NavLink
+                to="/login"
+                className="text-zinc-400 hover:text-white transition"
+              >
+                Login
+              </NavLink>
+
+              <NavLink
+                to="/signup"
+                className="px-4 py-2 rounded-lg bg-[#1B5E4A]/20 border border-[#1B5E4A]/40 hover:bg-[#1B5E4A]/30 transition"
+              >
+                Sign Up
+              </NavLink>
+
+            </>
+
+          ) : (
+
+            <>
+              {/* PROFILE */}
+              <NavLink
+                to="/profile"
+                className="text-zinc-400 hover:text-white transition"
+              >
+                Profile
+              </NavLink>
+
+              {/* ADMIN */}
+              {loggedUserRole === "admin" && (
+
+                <NavLink
+                  to="/dashboard"
+                  className="text-zinc-400 hover:text-white transition"
+                >
+                  Dashboard
+                </NavLink>
+
+              )}
+
+              {/* LOGOUT */}
+              <button
+                onClick={handleLogout}
+                className="text-[#1B5E4A] hover:text-red-400 transition"
+              >
+                Logout
+              </button>
+
+            </>
+          )}
 
         </div>
 
@@ -129,21 +171,57 @@ function Navbar() {
             Venues
           </NavLink>
 
-          <NavLink
-            to="/login"
-            onClick={() => setOpen(false)}
-            className="block text-zinc-400"
-          >
-            Login
-          </NavLink>
+           {!isLoggedIn ? (
 
-          <NavLink
-            to="/signup"
-            onClick={() => setOpen(false)}
-            className="block w-fit px-4 py-2 rounded-lg bg-[#1B5E4A]/20 border border-[#1B5E4A]/40"
-          >
-            Sign Up
-          </NavLink>
+            <>
+              <NavLink
+                to="/login"
+                onClick={() => setOpen(false)}
+                className="block text-zinc-400"
+              >
+                Login
+              </NavLink>
+
+              <NavLink
+                to="/signup"
+                onClick={() => setOpen(false)}
+                className="block w-fit px-4 py-2 rounded-lg bg-[#1B5E4A]/20 border border-[#1B5E4A]/40"
+              >
+                Sign Up
+              </NavLink>
+            </>
+
+          ) : (
+
+            <>
+              <NavLink
+                to="/profile"
+                onClick={() => setOpen(false)}
+                className="block text-zinc-400"
+              >
+                Profile
+              </NavLink>
+
+              {loggedUserRole === "admin" && (
+
+                <NavLink
+                  to="/dashboard"
+                  onClick={() => setOpen(false)}
+                  className="block text-zinc-400"
+                >
+                  Dashboard
+                </NavLink>
+
+              )}
+
+              <button
+                onClick={handleLogout}
+                className="block text-red-400"
+              >
+                Logout
+              </button>
+            </>
+          )}
 
         </div>
       )}

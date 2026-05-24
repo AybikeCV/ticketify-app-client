@@ -12,6 +12,7 @@ function AuthWrapper(props) {
 
     const [isAuthenticating, setIsAuthenticating] = useState(true)
 
+
     const authenticateUser = async() => {
 
         const authToken = localStorage.getItem("authToken")
@@ -44,6 +45,17 @@ function AuthWrapper(props) {
 
     }
 
+     const logoutUser = () => {
+
+    localStorage.removeItem("authToken");
+
+    setIsLoggedIn(false);
+
+    setLoggedUserId(null);
+
+    setLoggedUserRole(null);
+  };
+
     useEffect(() => {
         authenticateUser()
     }, [])
@@ -52,13 +64,16 @@ function AuthWrapper(props) {
         return <h3 className="text-center py-20 text-zinc-400">Authenticating user...</h3>
     }
 
+  
+
     const passedContext = {
         isLoggedIn,
         setIsLoggedIn,
         loggedUserId,
         setLoggedUserId,
         loggedUserRole,
-        setLoggedUserRole
+        setLoggedUserRole,
+        logoutUser,
     }
 
     return (
