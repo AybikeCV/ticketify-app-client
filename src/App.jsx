@@ -18,6 +18,10 @@ import Login from "./pages/auth/Login"
 import Signup from "./pages/auth/SignUp"
 import Profile from "./pages/auth/Profile"
 import AdminDashboard from "./pages/auth/AdminDashboard"
+import AdminUsers from "./pages/auth/AdminUsers"
+import AdminConcerts from "./pages/auth/AdminConcerts"
+import AdminCreateConcert from "./pages/auth/AdminCreateConcert"
+import AdminEditConcert from "./pages/auth/AdminEditConcert"
 
 function App() {
  
@@ -40,7 +44,12 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/profile" element={<ProtectedRoute> <Profile /> </ProtectedRoute>}/>
         <Route path="/dashboard" element={<AdminRoute> <AdminDashboard /> </AdminRoute>}/>
-
+        <Route path="/dashboard/users" element={<AdminRoute> <AdminUsers /> </AdminRoute>}/>
+        <Route path="/dashboard/concerts" element={<AdminRoute> <AdminConcerts /> </AdminRoute>}/>
+        <Route path="/dashboard/concerts/create" element={<AdminRoute> <AdminCreateConcert/> </AdminRoute>}/>
+        <Route path="/dashboard/concerts/edit/:id" element={<AdminRoute> <AdminEditConcert/> </AdminRoute>}/>
+           
+           
            {/* 404 */}
           <Route path="*" element={<NotFound />} />
         </Routes>
