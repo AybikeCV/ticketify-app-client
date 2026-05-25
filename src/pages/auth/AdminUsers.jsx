@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-
 import service from "../../services/index.services";
-
 import toast from "react-hot-toast";
+
+
 
 function AdminUsers() {
 
@@ -11,6 +11,8 @@ function AdminUsers() {
 
   const [loading, setLoading] =
     useState(true);
+
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
 
@@ -115,6 +117,11 @@ function AdminUsers() {
     );
   }
 
+  const filteredUser = users.filter((u) =>
+  u.name.toLowerCase().includes(search.toLowerCase()) ||
+  u.role.toLowerCase().includes(search.toLowerCase())
+);
+
   return (
 
     <div className="bg-zinc-950 min-h-screen text-zinc-100">
@@ -128,6 +135,15 @@ function AdminUsers() {
         <p className="text-zinc-500 mt-4">
           Manage users, roles and access.
         </p>
+
+        <input
+  placeholder="Search users..."
+  value={search}
+  onChange={(e) => setSearch(e.target.value)}
+  className="w-full bg-zinc-900 text-zinc-100 p-3 rounded-xl border border-zinc-800"
+/>
+
+
 
         {/* TABLE */}
         <div className="mt-12 overflow-x-auto rounded-2xl border border-zinc-800">
@@ -160,7 +176,7 @@ function AdminUsers() {
 
             <tbody>
 
-              {users.map((user) => (
+              {filteredUser.map((user) => (
 
                 <tr
                   key={user._id}

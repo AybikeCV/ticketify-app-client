@@ -1,13 +1,50 @@
-import { useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 
 import { Link } from "react-router-dom";
 
 import { ConcertContext } from "../../contexts/concertapi.context";
+import service from "../../services/index.services";
+import toast from "react-hot-toast";
+import DeleteFunction from "../../components/DeleteFunction";
 
 function AdminConcerts() {
 
   const { allConcerts } =
     useContext(ConcertContext);
+    const [showDeleteFunction, setShowDeleteFunction] = useState(false);
+
+const [selectedConcertId, setSelectedConcertId] = useState(null);
+
+   const handleDeleteConcert = async () => {
+
+  try {
+
+    await service.delete(
+      `/concerts/${selectedConcertId}`
+    );
+
+    toast.success("Concert deleted");
+
+    window.location.reload();
+
+  } catch (error) {
+
+    toast.error(
+      error.response?.data?.errorMessage ||
+      "Failed to delete concert"
+    );
+
+  } finally {
+
+    setShowDeleteModal(false);
+
+  }
+};
+
+
+
+
+
 
   return (
 
@@ -155,11 +192,15 @@ function AdminConcerts() {
                         Edit
                       </Link>
 
-                      <button
-                        className="px-4 py-2 rounded-lg border border-red-500/30 bg-red-500/10 hover:bg-red-500/20 transition"
-                      >
-                        Delete
-                      </button>
+                     <button
+ onClick={() => {
+  setSelectedConcertId(concert._id);
+  setShowDeleteFunction(true);
+}}
+  className="px-4 py-2 rounded-lg border border-red-500/30 bg-red-500/10 hover:bg-red-500/20 transition"
+>
+  Delete
+</button>
 
                     </div>
 
@@ -176,6 +217,13 @@ function AdminConcerts() {
         </div>
 
       </div>
+
+      <DeleteFunction
+  isOpen={showDeleteFunction}
+  onClose={() => setShowDeleteFunction(false)}
+  onConfirm={handleDeleteConcert}
+  title="concert"
+/>
 
     </div>
   );

@@ -1,10 +1,11 @@
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.jsx'
-import React from 'react'
-import { BrowserRouter } from 'react-router-dom'
-import { ConcertWrapper } from './contexts/concertapi.context.jsx'
-import { AuthWrapper } from './contexts/auth.context.jsx'
+import { createRoot } from "react-dom/client"
+import "./index.css"
+import App from "./App.jsx"
+import React from "react"
+import { BrowserRouter } from "react-router-dom"
+import { ConcertWrapper } from "./contexts/concertapi.context.jsx"
+import { AuthWrapper } from "./contexts/auth.context.jsx"
+import { ThemeWrapper } from "./contexts/theme.context.jsx"
 
 import "./utilities/fixLeafletIcons.js"
 import "leaflet/dist/leaflet.css"
@@ -13,12 +14,13 @@ import "leaflet/dist/leaflet.css"
 createRoot(document.getElementById('root')).render(
 
     <BrowserRouter>
+    <ThemeWrapper>
     <ConcertWrapper>
         <AuthWrapper>
     <App />
     </AuthWrapper>
     </ConcertWrapper>
-    
+    </ThemeWrapper>
     </BrowserRouter>
 
 )

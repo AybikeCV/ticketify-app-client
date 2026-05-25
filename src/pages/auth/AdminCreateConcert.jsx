@@ -8,7 +8,7 @@ function AdminCreateConcert() {
 
   const [venues, setVenues] = useState([]);
   const [loading, setLoading] = useState(false);
-  const hasImage = Boolean(form.image)
+  
 
   const [form, setForm] = useState({
     title: "",
@@ -26,9 +26,11 @@ function AdminCreateConcert() {
     imagePublicId: "",
   });
 
+  const hasImage = Boolean(form.image)
+
   // ---------------- FETCH VENUES ----------------
   useEffect(() => {
-    const fetchVenues = async () => {
+    const getVenues = async () => {
       try {
         const res = await service.get("/venues");
         setVenues(Array.isArray(res.data) ? res.data : []);
@@ -37,7 +39,7 @@ function AdminCreateConcert() {
       }
     };
 
-    fetchVenues();
+    getVenues();
   }, []);
 
   // ---------------- HANDLE INPUT ----------------

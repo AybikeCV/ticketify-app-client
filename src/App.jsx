@@ -22,6 +22,11 @@ import AdminUsers from "./pages/auth/AdminUsers"
 import AdminConcerts from "./pages/auth/AdminConcerts"
 import AdminCreateConcert from "./pages/auth/AdminCreateConcert"
 import AdminEditConcert from "./pages/auth/AdminEditConcert"
+import AdminVenues from "./pages/auth/AdminVenues"
+import AdminCreateVenue from "./pages/auth/AdminCreateVenue"
+import AdminEditVenue from "./pages/auth/AdminEditVenue"
+import AdminBookings from "./pages/auth/AdminBookings"
+import AdminEditBooking from "./pages/auth/AdminEditBooking"
 
 function App() {
  
@@ -48,8 +53,12 @@ function App() {
         <Route path="/dashboard/concerts" element={<AdminRoute> <AdminConcerts /> </AdminRoute>}/>
         <Route path="/dashboard/concerts/create" element={<AdminRoute> <AdminCreateConcert/> </AdminRoute>}/>
         <Route path="/dashboard/concerts/edit/:id" element={<AdminRoute> <AdminEditConcert/> </AdminRoute>}/>
-           
-           
+        <Route path="/dashboard/venues/" element={<AdminRoute> <AdminVenues/> </AdminRoute>}/>   
+        <Route path="/dashboard/venues/create" element={<AdminRoute> <AdminCreateVenue/> </AdminRoute>}/>   
+         <Route path="/dashboard/venues/edit/:id" element={<AdminRoute> <AdminEditVenue/> </AdminRoute>}/>  
+        <Route path="/dashboard/bookings/" element={<AdminRoute> <AdminBookings/> </AdminRoute>}/>
+        <Route path="/dashboard/bookings/edit/:id" element={<AdminRoute> <AdminEditBooking/> </AdminRoute>}/>
+
            {/* 404 */}
           <Route path="*" element={<NotFound />} />
         </Routes>

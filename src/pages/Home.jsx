@@ -1,11 +1,57 @@
 import React from "react"
 import { Link } from "react-router-dom";
-import { useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { ConcertContext } from "../contexts/concertapi.context";
 import ConcertCard from "../components/ConcertCard";
+import VenueCard from "../components/VenueCard";
 import ConcertFeaturedSlider from "../components/ConcertFeaturedSlider"
+import service from "../services/index.services";
 
 function Home() {
+
+
+  const { allConcerts} = useContext(ConcertContext)
+  const [ allVenues, setAllVenues ] = useState(null)
+  const [ search, setSearch ] = useState("")
+
+    useEffect(() => {
+        getVenueData()
+    }, [])
+
+const getVenueData = async () => {
+    try {
+      const response = await service.get("/venues");
+      console.log(response.data);
+      setAllVenues(response.data);
+    } catch (error) {
+      console.log(error);
+      
+    }
+  };
+
+if (!allVenues || !allConcerts) {
+    return (
+      <div className="text-center py-20 text-zinc-400">
+        Loading ...
+      </div>
+    );
+  }
+
+const concerts = allConcerts || []
+const venues = allVenues || []
+
+  const filteredConcerts = concerts.filter((c) =>
+  c.artist.toLowerCase().includes(search.toLowerCase()) ||
+  c.title.toLowerCase().includes(search.toLowerCase()) ||
+  c.genre.toLowerCase().includes(search.toLowerCase())
+);
+
+const filteredVenues = venues.filter((v) =>
+  v.name.toLowerCase().includes(search.toLowerCase()) ||
+  v.city.toLowerCase().includes(search.toLowerCase())
+);
+
+
   return (
     <div className="min-h-screen bg-zinc-800 text-zinc-100">
 
@@ -19,14 +65,27 @@ function Home() {
           Find and book live concerts with a simple, modern system.
         </p>
 
-        <div className="mt-8">
-          <Link
-            to="/concerts"
-            className="px-6 py-3 bg-[#0B3B2E]/20 border border-[#0B3B2E]/40 rounded-lg text-zinc-200 hover:bg-[#0B3B2E]/30"
-          >
-            Browse Concerts
-          </Link>
-        </div>
+        <input
+  type="text"
+  placeholder="Search concerts or venues..."
+  value={search}
+  onChange={(e) => setSearch(e.target.value)}
+  className="w-full max-w-xl bg-zinc-900 text-zinc-100 p-3 rounded-xl border border-zinc-800"
+/>
+
+<div className="grid md:grid-cols-3 gap-4 mt-6">
+  {filteredConcerts.map((concert) => (
+    <ConcertCard key={concert._id} concert={concert} />
+  ))}
+</div>
+
+<div className="grid md:grid-cols-3 gap-4 mt-6">
+  {filteredVenues.map((venue) => (
+    <VenueCard key={venue._id} venue={venue} />
+  ))}
+</div>
+
+
       </section>
 <section>
         <div className="max-w-6xl mx-auto px-4">

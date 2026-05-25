@@ -12,6 +12,7 @@ function Profile() {
 
     const [myBookings, setMyBookings] = useState([])
     const [loading, setLoading] = useState(true)
+    const [search, setSearch] = useState("")
     
     useEffect(() => {
 
@@ -55,12 +56,21 @@ function Profile() {
     );
   }
 
+
+  const filteredBookings = myBookings.filter((b) =>
+  b.concert.title.toLowerCase().includes(search.toLowerCase()) ||
+  b.concert.artist.toLowerCase().includes(search.toLowerCase())
+);
+
+
   return (
 
 
    <div className="bg-zinc-950 min-h-screen text-zinc-100">
 
       <div className="max-w-6xl mx-auto px-4 py-16">
+
+
 
         {/* PROFILE CARD */}
         <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8">
@@ -99,6 +109,19 @@ function Profile() {
 
         </div>
 
+        <br/>
+        <br/>
+
+         <input
+  placeholder="Search bookings by title or artist to manage them..."
+  value={search}
+  onChange={(e) => setSearch(e.target.value)}
+  className="w-full bg-zinc-900 text-zinc-100 p-3 rounded-xl border border-zinc-800"
+/>
+
+
+
+
         {/* BOOKINGS */}
         <section className="mt-16">
 
@@ -120,7 +143,7 @@ function Profile() {
 
             <div className="grid md:grid-cols-2 gap-6">
 
-              {myBookings.map((booking) => (
+              {filteredBookings.map((booking) => (
 
                 <BookingCard
                   key={booking._id}
