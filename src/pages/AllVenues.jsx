@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
 import VenueCard from "../components/VenueCard"
+import Loader from "../components/Loader"
 
 function AllVenues() {
 
@@ -26,11 +27,7 @@ const getVenueData = async () => {
   };
 
 if (!allVenues) {
-    return (
-      <div className="text-center py-20 text-zinc-400">
-        Loading venues...
-      </div>
-    );
+    return <Loading/>
   }
 
 

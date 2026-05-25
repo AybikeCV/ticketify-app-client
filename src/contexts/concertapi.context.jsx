@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import service from "../services/index.services";
+import Loader from "../components/Loader";
 
 const ConcertContext = createContext();
 
@@ -23,12 +24,8 @@ const getConcertData = async () => {
   };
 
 if (!allConcerts) {
-    return (
-      <div className="text-center py-20 text-zinc-400">
-        Loading concerts...
-      </div>
-    );
-  }
+    return <Loader/>
+}
 
   return (
     <ConcertContext.Provider value={{allConcerts}}>

@@ -20,11 +20,7 @@ function ConcertDetail() {
   );
 
   if (!concert) {
-    return (
-      <div className="text-center py-20 text-zinc-400">
-        Loading concert...
-      </div>
-    );
+    return <Loading />
   }
 
   const handleBooking = async () => {

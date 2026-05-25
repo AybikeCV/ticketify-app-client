@@ -33,7 +33,7 @@ function App() {
 
   return (
     
-     <div className="bg-zinc-800 min-h-screen text-zinc-100 flex flex-col">
+     <div className="min-h-screen flex flex-col bg-white text-black dark:bg-zinc-950 dark:text-zinc-100">
       
       <Navbar />
 
@@ -45,26 +45,29 @@ function App() {
           <Route path="/concerts/:id" element={<ConcertDetail />} />
           <Route path="/venues" element={<AllVenues />} />
           <Route path="/venues/:id" element={<VenueDetail />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/profile" element={<ProtectedRoute> <Profile /> </ProtectedRoute>}/>
-        <Route path="/dashboard" element={<AdminRoute> <AdminDashboard /> </AdminRoute>}/>
-        <Route path="/dashboard/users" element={<AdminRoute> <AdminUsers /> </AdminRoute>}/>
-        <Route path="/dashboard/concerts" element={<AdminRoute> <AdminConcerts /> </AdminRoute>}/>
-        <Route path="/dashboard/concerts/create" element={<AdminRoute> <AdminCreateConcert/> </AdminRoute>}/>
-        <Route path="/dashboard/concerts/edit/:id" element={<AdminRoute> <AdminEditConcert/> </AdminRoute>}/>
-        <Route path="/dashboard/venues/" element={<AdminRoute> <AdminVenues/> </AdminRoute>}/>   
-        <Route path="/dashboard/venues/create" element={<AdminRoute> <AdminCreateVenue/> </AdminRoute>}/>   
-         <Route path="/dashboard/venues/edit/:id" element={<AdminRoute> <AdminEditVenue/> </AdminRoute>}/>  
-        <Route path="/dashboard/bookings/" element={<AdminRoute> <AdminBookings/> </AdminRoute>}/>
-        <Route path="/dashboard/bookings/edit/:id" element={<AdminRoute> <AdminEditBooking/> </AdminRoute>}/>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
 
-           {/* 404 */}
+          <Route path="/dashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+          <Route path="/dashboard/users" element={<AdminRoute><AdminUsers /></AdminRoute>} />
+          <Route path="/dashboard/concerts" element={<AdminRoute><AdminConcerts /></AdminRoute>} />
+          <Route path="/dashboard/concerts/create" element={<AdminRoute><AdminCreateConcert /></AdminRoute>} />
+          <Route path="/dashboard/concerts/edit/:id" element={<AdminRoute><AdminEditConcert /></AdminRoute>} />
+
+          <Route path="/dashboard/venues" element={<AdminRoute><AdminVenues /></AdminRoute>} />
+          <Route path="/dashboard/venues/create" element={<AdminRoute><AdminCreateVenue /></AdminRoute>} />
+          <Route path="/dashboard/venues/edit/:id" element={<AdminRoute><AdminEditVenue /></AdminRoute>} />
+
+          <Route path="/dashboard/bookings" element={<AdminRoute><AdminBookings /></AdminRoute>} />
+          <Route path="/dashboard/bookings/edit/:id" element={<AdminRoute><AdminEditBooking /></AdminRoute>} />
+
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
 
       <Footer />
+
     </div>
   )
 }

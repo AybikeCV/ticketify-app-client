@@ -2,6 +2,7 @@ import { useState, useContext } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { AuthContext } from "../contexts/auth.context";
+import { ThemeContext } from "../contexts/theme.context";
 
 function Navbar() {
   const [open, setOpen] = useState(false);
@@ -10,7 +11,9 @@ function Navbar() {
 
   const { setIsLoggedIn, setLoggedUserId, isLoggedIn, loggedUserRole, setLoggedUserRole, lougoutUser } = useContext(AuthContext)
 
-  
+  const { theme, toggleTheme } = useContext(ThemeContext)
+  console.log(theme)
+  console.log(toggleTheme)
 
   function handleLogout(e) {
     e.preventDefault()
@@ -30,8 +33,11 @@ function Navbar() {
 
 
   return (
-    <nav className="bg-zinc-950 border-b border-zinc-800 text-zinc-100">
+    <nav className="bg-white text-zinc-900 border-zinc-200
 
+dark:bg-zinc-900 dark:text-zinc-100 dark:border-zinc-800">
+
+ 
       <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
 
         {/* LOGO */}
@@ -123,6 +129,19 @@ function Navbar() {
 
             </>
           )}
+
+          <button
+  onClick={toggleTheme}
+  className="
+    px-3 py-2 rounded-lg
+    border border-zinc-700
+    bg-zinc-900 text-zinc-100
+    dark:bg-white dark:text-zinc-900
+    transition-colors duration-300
+  "
+>
+  {theme === "dark" ? "☀️ Light" : "🌙 Dark"}
+</button>
 
         </div>
 

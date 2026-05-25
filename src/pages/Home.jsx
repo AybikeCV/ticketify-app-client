@@ -6,6 +6,7 @@ import ConcertCard from "../components/ConcertCard";
 import VenueCard from "../components/VenueCard";
 import ConcertFeaturedSlider from "../components/ConcertFeaturedSlider"
 import service from "../services/index.services";
+import Loader from "../components/Loader";
 
 function Home() {
 
@@ -13,6 +14,7 @@ function Home() {
   const { allConcerts} = useContext(ConcertContext)
   const [ allVenues, setAllVenues ] = useState(null)
   const [ search, setSearch ] = useState("")
+  const hasSearch = search.trim() !== ""
 
     useEffect(() => {
         getVenueData()
@@ -30,11 +32,7 @@ const getVenueData = async () => {
   };
 
 if (!allVenues || !allConcerts) {
-    return (
-      <div className="text-center py-20 text-zinc-400">
-        Loading ...
-      </div>
-    );
+    return <Loader/>
   }
 
 const concerts = allConcerts || []
@@ -73,25 +71,41 @@ const filteredVenues = venues.filter((v) =>
   className="w-full max-w-xl bg-zinc-900 text-zinc-100 p-3 rounded-xl border border-zinc-800"
 />
 
-<div className="grid md:grid-cols-3 gap-4 mt-6">
-  {filteredConcerts.map((concert) => (
-    <ConcertCard key={concert._id} concert={concert} />
-  ))}
-</div>
-
-<div className="grid md:grid-cols-3 gap-4 mt-6">
-  {filteredVenues.map((venue) => (
-    <VenueCard key={venue._id} venue={venue} />
-  ))}
-</div>
-
-
-      </section>
 <section>
         <div className="max-w-6xl mx-auto px-4">
         <ConcertFeaturedSlider />
       </div>
 </section>
+
+{hasSearch && (
+  <>
+    
+    {/* CONCERT RESULTS */}
+    <div className="grid md:grid-cols-3 gap-4 mt-6">
+      {filteredConcerts.map((concert) => (
+        <ConcertCard
+          key={concert._id}
+          concert={concert}
+        />
+      ))}
+    </div>
+
+    {/* VENUE RESULTS */}
+    <div className="grid md:grid-cols-3 gap-4 mt-6">
+      {filteredVenues.map((venue) => (
+        <VenueCard
+          key={venue._id}
+          venue={venue}
+        />
+      ))}
+    </div>
+
+  </>
+)}
+
+
+      </section>
+
     
 
       {/* SIMPLE CARDS */}

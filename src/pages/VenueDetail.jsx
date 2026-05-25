@@ -25,11 +25,7 @@ const getVenueData = async () => {
   };
 
 if (!allVenues) {
-    return (
-      <div className="text-center py-20 text-zinc-400">
-        Loading venues...
-      </div>
-    );
+    return <Loader/>
   }
 
   const { venue, upcomingConcerts } = allVenues;
