@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import service from "../../services/index.services";
 import toast from "react-hot-toast";
-
+import DeleteFunction from "../../components/DeleteFunction";
 
 
 function AdminUsers() {
@@ -13,6 +13,11 @@ function AdminUsers() {
     useState(true);
 
   const [search, setSearch] = useState("");
+
+  const [showRole, setShowRole] = useState(false)
+  const [selectedUser, setSelectedUser] = useState(null)
+
+  
 
   useEffect(() => {
 
@@ -46,39 +51,29 @@ function AdminUsers() {
   };
 
   // ROLE CHANGE
-  const handleRoleChange =
-    async (userId, currentRole) => {
+ const confirmRoleChange = async () => {
+  if (!selectedUser) return;
 
-      try {
+  try {
+    const newRole =
+      selectedUser.role === "user" ? "admin" : "user";
 
-        const newRole =
-          currentRole === "admin"
-            ? "user"
-            : "admin";
+    await service.patch(`/users/${selectedUser._id}`, {
+      role: newRole,
+    });
 
-        await service.patch(
-          `/users/${userId}`,
-          {
-            role: newRole,
-          }
-        );
-
-        toast.success(
-          "Role updated"
-        );
-
-        getUsers();
-
-      } catch (error) {
-
-        console.log(error);
-
-        toast.error(
-          "Failed to update role"
-        );
-      }
-    };
-
+    toast.success("Role updated");
+    await getUsers();
+  } catch (error) {
+    toast.error(
+      error.response?.data?.errorMessage ||
+        "Failed to update role"
+    );
+  } finally {
+    setShowRole(false);
+    setSelectedUser(null);
+  }
+};
   // ACTIVE CHANGE
   const handleActiveChange =
     async (userId, isActive) => {
@@ -119,7 +114,9 @@ function AdminUsers() {
 
   const filteredUser = users.filter((u) =>
   u.name.toLowerCase().includes(search.toLowerCase()) ||
-  u.role.toLowerCase().includes(search.toLowerCase())
+  u.email.toLowerCase().includes(search.toLowerCase()) ||
+  u.role.toLowerCase().includes(search.toLowerCase()) ||
+  u._id.toLowerCase().includes(search.toLowerCase())
 );
 
   return (
@@ -137,7 +134,7 @@ function AdminUsers() {
         </p>
 
         <input
-  placeholder="Search users..."
+  placeholder="Search users by name, email, role or user ID..."
   value={search}
   onChange={(e) => setSearch(e.target.value)}
   className="w-full bg-zinc-900 text-zinc-100 p-3 rounded-xl border border-zinc-800"
@@ -255,17 +252,20 @@ function AdminUsers() {
                     <div className="flex flex-wrap gap-3">
 
                       {/* ROLE */}
-                      <button
-                        onClick={() =>
-                          handleRoleChange(
-                            user._id,
-                            user.role
-                          )
-                        }
-                        className="px-4 py-2 rounded-lg bg-[#1B5E4A]/20 border border-[#1B5E4A]/30 hover:bg-[#1B5E4A]/30 transition"
-                      >
-                        Change Role
-                      </button>
+<button
+  onClick={() => {
+    if (user.role === "admin") {
+      toast.error("You cannot change an admin's role.");
+      return;
+    }
+
+    setSelectedUser(user);
+    setShowRole(true);
+  }}
+  className="px-4 py-2 rounded-lg bg-[#1B5E4A]/20 border border-[#1B5E4A]/30 hover:bg-[#1B5E4A]/30 transition"
+>
+  Change Role
+</button>
 
                       {/* ACTIVE */}
                       <button
@@ -297,7 +297,18 @@ function AdminUsers() {
         </div>
 
       </div>
-
+   {showRole && selectedUser && (
+  <DeleteFunction
+    isOpen={showRole}
+    onClose={() => {
+      setShowRole(false);
+      setSelectedUser(null);
+    }}
+    onConfirm={confirmRoleChange}
+    title="Change Role"
+    message={`Change role for ${selectedUser.name}?`}
+  />
+)}
     </div>
   );
 }

@@ -64,6 +64,8 @@ function AdminBookings() {
   const concertArtist = b?.concert?.artist || ""
   const userName = b?.user?.name || "";
 
+console.log(b.concert)
+
   return (
     concertTitle.toLowerCase().includes(search.toLowerCase()) ||
     concertArtist.toLowerCase().includes(search.toLowerCase()) ||
@@ -101,9 +103,6 @@ function AdminBookings() {
   onChange={(e) => setSearch(e.target.value)}
   className="w-full bg-zinc-900 text-zinc-100 p-3 rounded-xl border border-zinc-800"
 />
-
-
-
 
 
         {/* TABLE */}
@@ -220,16 +219,17 @@ function AdminBookings() {
                       €{booking.totalPrice}
                     </td>
 
-                    {/* STATUS */}
+            {/* STATUS */}
 
                     <td className="p-5">
 
                       <span
                         className={`px-3 py-1 rounded-full text-sm font-medium ${
-                          booking.status ===
-                          "confirmed"
-                            ? "bg-green-500/10 text-green-400 border border-green-500/20"
-                            : "bg-red-500/10 text-red-400 border border-red-500/20"
+                          booking.status === "confirmed"
+  ? "bg-green-500/10 text-green-400"
+  : booking.status === "cancel_requested"
+  ? "bg-yellow-500/10 text-yellow-400"
+  : "bg-red-500/10 text-red-400"
                         }`}
                       >
                         {booking.status}

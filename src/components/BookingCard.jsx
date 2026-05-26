@@ -1,45 +1,37 @@
+import { useState } from "react";
 import service from "../services/index.services";
 import toast from "react-hot-toast";
+import DeleteFunction from "./DeleteFunction";
 
 
-function BookingCard({
-  booking,
-  refreshBookings,
-}) {
+function BookingCard({booking, refreshBookings,}) {
 
   const concert = booking.concert;
+ 
+  const [showCancel, setShowCancel] = useState(false);
 
-  const handleCancelBooking =
-    async () => {
+  
+  
 
-      try {
+ const handleCancelBooking = async () => {
+  try {
+    setLoading(true);
 
-        await service.patch(
-          `/bookings/${booking._id}`,
-          {
-            reason:
-              "Cancelled by user"
-          }
-        );
+    await service.patch(`/bookings/${booking._id}`);
 
-        toast.success(
-          "Booking cancelled"
-        );
+    toast.success("Booking cancelled");
 
-        refreshBookings();
-
-      } catch (error) {
-
-        console.log(error);
-
-        toast.error(
-          error.response?.data?.errorMessage ||
-          "Failed to cancel booking"
-        );
-      }
-    };
-
-  return (
+    navigate("/dashboard/bookings");
+  } catch (error) {
+    toast.error(
+      error.response?.data?.errorMessage || "Failed to cancel booking"
+    );
+  } finally {
+  
+    setShowCancel(false);
+  }
+};
+      return (
 
     <div className="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden">
 
@@ -98,22 +90,28 @@ function BookingCard({
 
         </div>
 
-        {/* BUTTON */}
-        {booking.status ===
-          "confirmed" && (
 
-          <button
-            onClick={
-              handleCancelBooking
-            }
-            className="mt-8 px-5 py-3 rounded-lg border border-red-500/30 bg-red-500/10 hover:bg-red-500/20 transition"
-          >
-            Cancel Booking
-          </button>
+        {/* BUTTON */}
+        {booking.status === "confirmed" && ( 
+          <button onClick={() => setShowCancel(true)}
+  className="mt-8 px-5 py-3 rounded-lg border border-red-500/30 bg-red-500/10 hover:bg-red-500/20 transition"
+>
+  Cancel Booking
+</button>
 
         )}
 
       </div>
+{showCancel && (
+  <DeleteFunction
+    isOpen={showCancel}
+    onClose={() => setShowCancel(false)}
+    onConfirm={handleCancelBooking}
+    title="Cancel Booking"
+    message="Are you sure you want to cancel this booking?"
+  />
+)}
+
 
     </div>
   );

@@ -27,7 +27,7 @@ const getVenueData = async () => {
   };
 
 if (!allVenues) {
-    return <Loading/>
+    return <Loader/>
   }
 
 

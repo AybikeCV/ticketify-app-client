@@ -27,6 +27,7 @@ import AdminCreateVenue from "./pages/auth/AdminCreateVenue"
 import AdminEditVenue from "./pages/auth/AdminEditVenue"
 import AdminBookings from "./pages/auth/AdminBookings"
 import AdminEditBooking from "./pages/auth/AdminEditBooking"
+import EditProfile from "./pages/auth/EditProfile"
 
 function App() {
  
@@ -48,6 +49,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+          <Route path="/profile/edit" element={<ProtectedRoute><EditProfile /></ProtectedRoute>} />
 
           <Route path="/dashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
           <Route path="/dashboard/users" element={<AdminRoute><AdminUsers /></AdminRoute>} />
@@ -61,6 +63,7 @@ function App() {
 
           <Route path="/dashboard/bookings" element={<AdminRoute><AdminBookings /></AdminRoute>} />
           <Route path="/dashboard/bookings/edit/:id" element={<AdminRoute><AdminEditBooking /></AdminRoute>} />
+
 
           <Route path="*" element={<NotFound />} />
         </Routes>

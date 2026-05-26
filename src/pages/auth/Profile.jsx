@@ -1,18 +1,21 @@
 import { useContext, useEffect, useState } from "react";
-
 import { AuthContext } from "../../contexts/auth.context";
 import service from "../../services/index.services";
 import toast from "react-hot-toast";
-
 import BookingCard from "../../components/BookingCard";
+import { Link, useNavigate } from "react-router-dom"
+import DeleteFunction from "../../components/DeleteFunction";
+
 
 function Profile() {
 
-    const {loggedUserId, loggedUserRole} = useContext(AuthContext);
+    const {loggedUserId, loggedUserRole, logoutUser} = useContext(AuthContext);
 
     const [myBookings, setMyBookings] = useState([])
     const [loading, setLoading] = useState(true)
     const [search, setSearch] = useState("")
+    const navigate = useNavigate()
+    const [showDeleteFunction, setShowDeleteFunction] = useState(false)
     
     useEffect(() => {
 
@@ -62,6 +65,32 @@ function Profile() {
   b.concert.artist.toLowerCase().includes(search.toLowerCase())
 );
 
+const handleDeleteProfile = async () => {
+
+  
+
+  try {
+
+    await service.delete(
+      "/users/profile"
+    );
+
+    toast.success(
+      "Profile deleted"
+    );
+
+    logoutUser();
+
+    navigate("/");
+
+  } catch (error) {
+
+    toast.error(
+      error.response?.data?.errorMessage ||
+      "Failed to delete profile"
+    );
+  }
+};
 
   return (
 
@@ -104,6 +133,24 @@ function Profile() {
               </p>
 
             </div>
+
+            <div className="flex gap-4 mt-8">
+
+  <Link
+    to="/profile/edit"
+    className="px-5 py-3 rounded-xl bg-[#1B5E4A]/20 border border-[#1B5E4A]/30 hover:bg-[#1B5E4A]/30 transition"
+  >
+    Edit Profile
+  </Link>
+
+  <button
+    onClick={() => setShowDeleteFunction(true)}
+    className="px-5 py-3 rounded-xl border border-red-500/30 bg-red-500/10 hover:bg-red-500/20 transition"
+  >
+    Delete Profile
+  </button>
+
+</div>
 
           </div>
 
@@ -160,6 +207,17 @@ function Profile() {
         </section>
 
       </div>
+      {showDeleteFunction && (
+
+ <DeleteFunction
+  isOpen={showRole}
+  onClose={() => setShowRole(false)}
+  onConfirm={confirmRoleChange}
+  title="Change Role"
+  message={`Change role for ${selectedUser.name}?`}
+/>
+
+)}
 
     </div>
   );

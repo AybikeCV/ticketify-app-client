@@ -262,7 +262,7 @@ function AdminEditConcert() {
             <input
               type="file"
               className="w-full"
-              onChange={() => toast("Connect upload API here")}
+              onChange={handleImageUpload}
             />
           </section>
 

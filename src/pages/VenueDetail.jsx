@@ -3,6 +3,7 @@ import service from "../services/index.services";
 import axios from "axios";
 import { useParams, Link } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import Loader from "../components/Loader";
 
 function VenueDetail() {
 

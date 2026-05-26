@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import service from "../../services/index.services";
+import DeleteFunction from "../../components/DeleteFunction";
 
 function AdminEditBooking() {
 
@@ -11,13 +12,16 @@ function AdminEditBooking() {
 
   const [booking, setBooking] = useState(null);
 
+  const [showCancel, setShowCancel] = useState(false);
+
+
   const [loading, setLoading] = useState(true);
 
-  const [reason, setReason] = useState("");
 
-  // =========================================
+
+
   // FETCH BOOKING
-  // =========================================
+ 
 
   useEffect(() => {
 
@@ -47,56 +51,30 @@ function AdminEditBooking() {
 
   }, [id]);
 
-  // =========================================
+
   // CANCEL BOOKING
-  // =========================================
+ 
 
-  const handleCancelBooking =
-    async () => {
+  const handleCancelBooking = async () => {
+  try {
+    setLoading(true);
 
-      const confirmCancel =
-        window.confirm(
-          "Are you sure you want to cancel this booking?"
-        );
+    await service.patch(`/bookings/${id}`);
 
-      if (!confirmCancel) return;
+    toast.success("Booking cancelled");
 
-      try {
-
-        setLoading(true);
-
-        await service.patch(
-          `/bookings/${id}`,
-          {
-            reason,
-          }
-        );
-
-        toast.success(
-          "Booking cancelled"
-        );
-
-        navigate(
-          "/dashboard/bookings"
-        );
-
-      } catch (error) {
-
-        toast.error(
-          error.response?.data
-            ?.errorMessage ||
-            "Failed to cancel booking"
-        );
-
-      } finally {
-
-        setLoading(false);
-      }
-    };
-
-  // =========================================
+    navigate("/dashboard/bookings");
+  } catch (error) {
+    toast.error(
+      error.response?.data?.errorMessage || "Failed to cancel booking"
+    );
+  } finally {
+    setLoading(false);
+    setShowCancel(false);
+  }
+};
   // LOADING
-  // =========================================
+  
 
   if (loading || !booking) {
 
@@ -239,21 +217,9 @@ function AdminEditBooking() {
 
             <div className="space-y-4">
 
-              <textarea
-                value={reason}
-                onChange={(e) =>
-                  setReason(
-                    e.target.value
-                  )
-                }
-                placeholder="Cancellation reason (optional)"
-                className="w-full h-32 p-4 rounded-xl bg-zinc-950 border border-zinc-800"
-              />
-
+            
               <button
-                onClick={
-                  handleCancelBooking
-                }
+               onClick={() => setShowCancel(true)}
                 className="w-full py-3 rounded-xl bg-red-500/20 border border-red-500/30 hover:bg-red-500/30 transition font-semibold text-red-300"
               >
                 Cancel Booking
@@ -266,7 +232,15 @@ function AdminEditBooking() {
         </div>
 
       </div>
-
+{showCancel && (
+  <DeleteFunction
+    isOpen={showCancel}
+    onClose={() => setShowCancel(false)}
+    onConfirm={handleCancelBooking}
+    title="Cancel Booking"
+    message="Are you sure you want to cancel this booking?"
+  />
+)}
     </div>
   );
 }

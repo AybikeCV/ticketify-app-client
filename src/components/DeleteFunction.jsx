@@ -5,6 +5,10 @@ function DeleteFunction({
   onClose,
   onConfirm,
   title,
+  message,
+  showInput,
+  inputValue,
+  setInputValue,
 }) {
   if (!isOpen) return null;
 
@@ -18,14 +22,24 @@ function DeleteFunction({
       >
 
         <h2 className="text-2xl font-bold text-zinc-100">
-          Delete {title}?
+          {title}
         </h2>
 
         <p className="text-zinc-400 mt-3">
-          This action cannot be undone.
+          {message}
         </p>
 
-        <div className="flex justify-end gap-4 mt-8">
+        {/* ✅ INPUT FIELD FOR REASON */}
+        {showInput && (
+          <textarea
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            placeholder="Write your reason..."
+            className="w-full mt-4 h-28 p-3 rounded-lg bg-zinc-950 border border-zinc-800 text-zinc-100"
+          />
+        )}
+
+        <div className="flex justify-end gap-4 mt-6">
 
           <button
             onClick={onClose}
@@ -38,13 +52,12 @@ function DeleteFunction({
             onClick={onConfirm}
             className="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700"
           >
-            Delete
+            Confirm
           </button>
 
         </div>
 
       </motion.div>
-
     </div>
   );
 }
