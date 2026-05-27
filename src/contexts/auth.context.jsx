@@ -11,6 +11,7 @@ function AuthWrapper(props) {
     const [loggedUserRole, setLoggedUserRole] = useState(null)
 
     const [isAuthenticating, setIsAuthenticating] = useState(true)
+    const [loggedUserName, setLoggedUserName] = useState(null)
 
 
     const authenticateUser = async() => {
@@ -30,6 +31,7 @@ function AuthWrapper(props) {
             setIsLoggedIn(true)
             setLoggedUserId(response.data.payload._id)
             setLoggedUserRole(response.data.payload.role)
+            setLoggedUserName(response.data.payload.name)
 
             setIsAuthenticating(false)
             
@@ -74,6 +76,9 @@ function AuthWrapper(props) {
         loggedUserRole,
         setLoggedUserRole,
         logoutUser,
+        loggedUserName,
+        setLoggedUserName,
+       
     }
 
     return (

@@ -33,9 +33,9 @@ function AllConcerts() {
             concert={concert}
           />
         ))}
-
       </div>
 
+   
     </div>
   );
 }

@@ -1,180 +1,129 @@
-import { useContext } from "react";
-import { useParams, Link } from "react-router-dom";
-
+import { useContext, useState } from "react";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { ConcertContext } from "../contexts/concertapi.context";
-import { useState } from "react";
-import toast from "react-hot-toast"
+import toast from "react-hot-toast";
 import service from "../services/index.services";
 import Loader from "../components/Loader";
-import { useNavigate } from "react-router-dom";
-
-
 
 function ConcertDetail() {
-
   const { id } = useParams();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const { allConcerts } = useContext(ConcertContext);
-    const [quantity, setQuantity] = useState(1)
 
-  const safeConcerts = Array.isArray(allConcerts)
-  ? allConcerts
-  : [];
+  const safeConcerts = Array.isArray(allConcerts) ? allConcerts : [];
+  const concert = safeConcerts.find((c) => c._id === id);
 
-const concert = safeConcerts.find(
-  (c) => c._id === id
-);
+  const [selectedSeats, setSelectedSeats] = useState([]);
 
-  if (!concert) {
-    return <Loader />
-  }
+  if (!concert) return <Loader />;
+
+  // 🎯 fake seat layout (you can later make it dynamic)
+  const seats = Array.from({ length: 30 }, (_, i) => `A${i + 1}`);
+
+  const toggleSeat = (seat) => {
+    if (selectedSeats.includes(seat)) {
+      setSelectedSeats(selectedSeats.filter((s) => s !== seat));
+    } else {
+      if (selectedSeats.length >= 10) {
+        toast.error("Max 10 seats allowed");
+        return;
+      }
+      setSelectedSeats([...selectedSeats, seat]);
+    }
+  };
 
   const handleBooking = async () => {
+    try {
+      if (selectedSeats.length === 0) {
+        toast.error("Select at least one seat");
+        return;
+      }
 
-  try {
-
-    const response =
       await service.post("/bookings", {
-
         concertId: concert._id,
-        quantity,
+        quantity: selectedSeats.length,
+        seats: selectedSeats, // 👈 NEW
       });
 
-    console.log(response.data);
+      toast.success("Booking successful!");
 
-   toast.success("Booking successful!");
-
-setTimeout(() => {
-  navigate("/profile");
-}, 500);
-
-  } catch (error) {
-
-    console.log(error);
-
-    toast.error(
-      error.response?.data?.errorMessage ||
-      "Booking failed"
-    );
-  }
-};
-
+      setTimeout(() => navigate("/profile"), 500);
+    } catch (error) {
+      toast.error(error.response?.data?.errorMessage || "Booking failed");
+    }
+  };
 
   return (
     <div className="bg-zinc-950 min-h-screen text-zinc-100">
 
       {/* IMAGE */}
       <div className="h-[400px] overflow-hidden">
-
         <img
           src={concert.image}
-          alt={concert.title}
           className="w-full h-full object-cover"
         />
-
       </div>
 
-      {/* CONTENT */}
       <div className="max-w-5xl mx-auto px-4 py-10">
 
-        <h1 className="text-5xl font-bold">
-          {concert.title}
-        </h1>
+        {/* TITLE */}
+        <h1 className="text-5xl font-bold">{concert.title}</h1>
+        <p className="text-[#1B5E4A] mt-3 text-xl">{concert.artist}</p>
 
-        <p className="text-[#1B5E4A] mt-3 text-xl">
-          {concert.artist}
-        </p>
+        {/* SEAT GRID */}
+        <div className="mt-10">
+          <h2 className="text-xl font-semibold mb-4">
+            Select Seats
+          </h2>
 
-        <div className="mt-10 space-y-4 text-zinc-300">
+          <div className="grid grid-cols-6 gap-3">
+            {seats.map((seat) => {
+              const selected = selectedSeats.includes(seat);
 
-          <p>
-            <span className="text-zinc-500">Venue:</span>{" "}
-            <Link to={`/venues/${concert?.venue?._id}`}>{concert?.venue?.name}</Link>
-          </p>
-
-
-
-          <p>
-            <span className="text-zinc-500">Date:</span>{" "}
-            {new Date(concert.date).toLocaleDateString()}
-          </p>
-
-                           <p>
-  <span className="text-zinc-500">Time:</span>{" "}
-  {new Date(concert.date).toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit",
-  })}
-</p>
-<p>
-  <span className="text-zinc-500">Doors Open:</span>{" "}
-  {concert.doorsOpen || "Not announced"}
-</p>
-
-          <p>
-            <span className="text-zinc-500">Price:</span>{" "}
-            €{concert.price}
-          </p>
-
-          <p className="text-zinc-400 leading-relaxed pt-6">
-            {concert.description}
-          </p>
-
+              return (
+                <button
+                  key={seat}
+                  onClick={() => toggleSeat(seat)}
+                  className={`
+                    p-2 rounded-lg border text-sm
+                    ${
+                      selected
+                        ? "bg-[#1B5E4A] border-[#1B5E4A]"
+                        : "bg-zinc-900 border-zinc-700 hover:bg-zinc-800"
+                    }
+                  `}
+                >
+                  {seat}
+                </button>
+              );
+            })}
+          </div>
         </div>
 
-        <div className="mt-8 flex items-center gap-4">
+        {/* INFO */}
+        <div className="mt-8 text-zinc-300 space-y-3">
+          <p>Price: €{concert.price}</p>
+          <p>Selected seats: {selectedSeats.length}</p>
+        </div>
 
-  <button
-    onClick={() =>
-      quantity > 1 &&
-      setQuantity(quantity - 1)
-    }
-    className="w-10 h-10 rounded-lg bg-zinc-800 hover:bg-zinc-700"
-  >
-    -
-  </button>
+        {/* BOOK BUTTON */}
+        <button
+          onClick={handleBooking}
+          className="mt-10 px-6 py-3 rounded-lg bg-[#1B5E4A]/20 border border-[#1B5E4A]/40 hover:bg-[#1B5E4A]/30 transition"
+        >
+          Book Ticket
+        </button>
 
-  <span className="text-2xl font-semibold">
-    {quantity}
-  </span>
-
-  <button
-    onClick={() =>
-      quantity < 10 &&
-      setQuantity(quantity + 1)
-    }
-    className="w-10 h-10 rounded-lg bg-zinc-800 hover:bg-zinc-700"
-  >
-    +
-  </button>
-
-</div>
-
-
-       <button
-  onClick={handleBooking}
-  className="mt-10 px-6 py-3 rounded-lg bg-[#1B5E4A]/20 border border-[#1B5E4A]/40 hover:bg-[#1B5E4A]/30 transition"
->
-  Book Ticket
-</button>
-
-<div className="mt-6 flex gap-4 flex-wrap">
-
-  <Link
-    to="/"
-    className="px-5 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 transition"
-  >
-    Home
-  </Link>
-
-  <Link
-    to="/concerts"
-    className="px-5 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 transition"
-  >
-    Concerts
-  </Link>
-</div>
+        {/* NAV */}
+        <div className="mt-6 flex gap-4">
+          <Link to="/" className="px-5 py-2 bg-zinc-800 rounded-lg">
+            Home
+          </Link>
+          <Link to="/concerts" className="px-5 py-2 bg-zinc-800 rounded-lg">
+            Concerts
+          </Link>
+        </div>
       </div>
     </div>
   );

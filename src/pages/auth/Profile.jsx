@@ -8,9 +8,10 @@ import DeleteFunction from "../../components/DeleteFunction";
 import Loader from "../../components/Loader"
 
 
+
 function Profile() {
 
-    const {loggedUserId, loggedUserRole, logoutUser} = useContext(AuthContext);
+    const {loggedUserId, loggedUserRole, logoutUser, loggedUserName} = useContext(AuthContext);
 
     const [myBookings, setMyBookings] = useState([])
     const [loading, setLoading] = useState(true)
@@ -53,11 +54,7 @@ function Profile() {
 
   if (loading) {
 
-    return (
-      <div className="text-center py-20 text-zinc-400">
-        Loading profile...
-      </div>
-    );
+    return <Loader/>
   }
 
 const safeMyBookings = Array.isArray(myBookings) ? myBookings : [];
@@ -122,6 +119,7 @@ const handleDeleteProfile = async () => {
                 User ID
               </p>
 
+
               <p>
                 {loggedUserId}
               </p>
@@ -130,9 +128,16 @@ const handleDeleteProfile = async () => {
 
             <div>
 
+
+        <p className="text-zinc-500 text-sm">Name</p>
+<p>{loggedUserName}</p>
+
+
               <p className="text-zinc-500 text-sm">
                 Role
               </p>
+
+      
 
               <p className="text-[#1B5E4A] capitalize">
                 {loggedUserRole}
@@ -223,17 +228,19 @@ const handleDeleteProfile = async () => {
         </section>
 
       </div>
-      {showDeleteFunction && (
+    
 
- <DeleteFunction
-  isOpen={showRole}
-  onClose={() => setShowRole(false)}
-  onConfirm={confirmRoleChange}
-  title="Change Role"
-  message={`Change role for ${selectedUser.name}?`}
-/>
-
+ {showDeleteFunction && (
+  <DeleteFunction
+    isOpen={showDeleteFunction}
+    onClose={() => setShowDeleteFunction(false)}
+    onConfirm={handleDeleteProfile}
+    title="Delete Profile"
+    message="Are you sure you want to delete your account? This action cannot be undone."
+  />
 )}
+
+
 
     </div>
   );

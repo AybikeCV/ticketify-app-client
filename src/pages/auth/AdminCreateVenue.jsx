@@ -1,9 +1,11 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 import service from "../../services/index.services";
+import { Link, useNavigate } from "react-router-dom"
 
 function AdminCreateVenue() {
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate()
 
   const [form, setForm] = useState({
     name: "",
@@ -81,6 +83,7 @@ function AdminCreateVenue() {
       });
 
       toast.success("Venue created");
+      navigate("/dashboard/venues");
 
       setForm({
         name: "",

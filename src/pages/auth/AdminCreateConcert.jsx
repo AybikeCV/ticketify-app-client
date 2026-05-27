@@ -2,12 +2,15 @@ import { useState, useEffect, useContext } from "react";
 import toast from "react-hot-toast";
 import service from "../../services/index.services";
 import { ConcertContext } from "../../contexts/concertapi.context";
+import { useNavigate, Link } from "react-router-dom";
 
 function AdminCreateConcert() {
   const { allConcerts } = useContext(ConcertContext);
 
   const [venues, setVenues] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate()
   
 
   const [form, setForm] = useState({
@@ -91,6 +94,8 @@ function AdminCreateConcert() {
 
       toast.success("Concert created");
 
+      navigate("/admin/concerts");
+
       // refresh concerts list (if function exists)
       if (allConcerts?.length !== undefined) {
        
@@ -111,30 +116,43 @@ function AdminCreateConcert() {
         featured: false,
         image: "",
         imagePublicId: "",
+        
       });
     } catch (err) {
-      toast.error(err.response?.data?.errorMessage || "Error creating concert");
+       console.log("ERROR:", err.response?.data || err);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 p-10">
-      <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen bg-zinc-950 text-zinc-100 py-10 px-4">
+  <div className="max-w-5xl mx-auto">
 
-        {/* HEADER */}
-        <h1 className="text-4xl font-bold mb-2">Create Concert</h1>
-        <p className="text-zinc-400 mb-8">
-          Add a new concert to your platform
-        </p>
+    {/* HEADER */}
+    <div className="mb-10">
+      <h1 className="text-3xl md:text-4xl font-bold">
+        Create Concert
+      </h1>
 
-        <form
-          onSubmit={handleSubmit}
-          className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 space-y-6"
-        >
+      <p className="text-zinc-400 mt-2">
+        Add a new concert to your platform
+      </p>
+    </div>
 
-          {/* TITLE */}
+    <form
+      onSubmit={handleSubmit}
+      className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 md:p-8 space-y-10"
+    >
+
+      {/* ================= BASIC INFO ================= */}
+      <div>
+        <h2 className="text-lg font-semibold mb-4 text-zinc-300">
+          Basic Information
+        </h2>
+
+        <div className="grid md:grid-cols-2 gap-4">
+
           <input
             name="title"
             value={form.title}
@@ -143,7 +161,6 @@ function AdminCreateConcert() {
             className="w-full p-3 rounded-xl bg-zinc-950 border border-zinc-800"
           />
 
-          {/* ARTIST */}
           <input
             name="artist"
             value={form.artist}
@@ -152,16 +169,25 @@ function AdminCreateConcert() {
             className="w-full p-3 rounded-xl bg-zinc-950 border border-zinc-800"
           />
 
-          {/* DESCRIPTION */}
-          <textarea
-            name="description"
-            value={form.description}
-            onChange={handleChange}
-            placeholder="Concert description"
-            className="w-full p-3 rounded-xl bg-zinc-950 border border-zinc-800 h-28"
-          />
+        </div>
 
-          {/* VENUE */}
+        <textarea
+          name="description"
+          value={form.description}
+          onChange={handleChange}
+          placeholder="Concert description"
+          className="w-full mt-4 p-3 rounded-xl bg-zinc-950 border border-zinc-800 h-28"
+        />
+      </div>
+
+      {/* ================= LOCATION ================= */}
+      <div>
+        <h2 className="text-lg font-semibold mb-4 text-zinc-300">
+          Venue & Schedule
+        </h2>
+
+        <div className="grid md:grid-cols-2 gap-4">
+
           <select
             name="venue"
             value={form.venue}
@@ -179,7 +205,6 @@ function AdminCreateConcert() {
             ))}
           </select>
 
-          {/* DATE */}
           <input
             type="date"
             name="date"
@@ -188,29 +213,32 @@ function AdminCreateConcert() {
             className="w-full p-3 rounded-xl bg-zinc-950 border border-zinc-800"
           />
 
-          {/* GENRE */}
-          <select
-            name="genre"
-            value={form.genre}
-            onChange={handleChange}
-            className="w-full p-3 rounded-xl bg-zinc-950 border border-zinc-800"
-          >
-            <option value="" disabled>
-              🎵 Select genre
-            </option>
-            <option value="pop">Pop</option>
-            <option value="rock">Rock</option>
-            <option value="hiphop">Hip Hop</option>
-            <option value="electronic">Electronic</option>
-            <option value="jazz">Jazz</option>
-            <option value="classical">Classical</option>
-            <option value="indie">Indie</option>
-            <option value="metal">Metal</option>
-            <option value="rnb">R&B</option>
-            <option value="other">Other</option>
-          </select>
+        </div>
 
-          {/* PRICE */}
+        {/* 🕒 DOORS OPEN */}
+        <div className="mt-4">
+          <label className="text-sm text-zinc-400">
+            Doors Open Time
+          </label>
+
+          <input
+            type="time"
+            name="doorsOpen"
+            value={form.doorsOpen}
+            onChange={handleChange}
+            className="w-full mt-2 p-3 rounded-xl bg-zinc-950 border border-zinc-800"
+          />
+        </div>
+      </div>
+
+      {/* ================= TICKETS ================= */}
+      <div>
+        <h2 className="text-lg font-semibold mb-4 text-zinc-300">
+          Tickets
+        </h2>
+
+        <div className="grid md:grid-cols-2 gap-4">
+
           <input
             type="number"
             name="price"
@@ -220,7 +248,6 @@ function AdminCreateConcert() {
             className="w-full p-3 rounded-xl bg-zinc-950 border border-zinc-800"
           />
 
-          {/* TOTAL SEATS */}
           <input
             type="number"
             name="totalSeats"
@@ -230,59 +257,101 @@ function AdminCreateConcert() {
             className="w-full p-3 rounded-xl bg-zinc-950 border border-zinc-800"
           />
 
-          {/* IMAGE */}
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageUpload}
-          />
-
-          {hasImage && (
-  <img
-    src={form.image}
-    className="w-full h-64 object-cover rounded-xl"
-  />
-)}
-
-          {/* FEATURED */}
-          <label className="flex items-center gap-2 text-zinc-300">
-            <input
-              type="checkbox"
-              checked={form.featured}
-              onChange={() =>
-                setForm((prev) => ({
-                  ...prev,
-                  featured: !prev.featured,
-                }))
-              }
-            />
-            Featured concert
-          </label>
-
-          {/* STATUS */}
-          <select
-            name="status"
-            value={form.status}
-            onChange={handleChange}
-            className="w-full p-3 rounded-xl bg-zinc-950 border border-zinc-800"
-          >
-            <option value="upcoming">Upcoming</option>
-            <option value="cancelled">Cancelled</option>
-            <option value="sold_out">Sold Out</option>
-            <option value="past">Past</option>
-          </select>
-
-          {/* SUBMIT */}
-          <button
-            disabled={loading}
-            className="w-full py-3 rounded-xl bg-[#1B5E4A] hover:bg-[#164a3a] transition font-semibold"
-          >
-            {loading ? "Creating..." : "Create Concert"}
-          </button>
-
-        </form>
+        </div>
       </div>
-    </div>
+
+      {/* ================= CATEGORY ================= */}
+      <div>
+        <h2 className="text-lg font-semibold mb-4 text-zinc-300">
+          Category
+        </h2>
+
+        <select
+          name="genre"
+          value={form.genre}
+          onChange={handleChange}
+          className="w-full p-3 rounded-xl bg-zinc-950 border border-zinc-800"
+        >
+          <option value="" disabled>
+            🎵 Select genre
+          </option>
+          <option value="pop">Pop</option>
+          <option value="rock">Rock</option>
+          <option value="hiphop">Hip Hop</option>
+          <option value="electronic">Electronic</option>
+          <option value="jazz">Jazz</option>
+          <option value="folk">Folk</option>
+          <option value="classical">Classical</option>
+          <option value="indie">Indie</option>
+          <option value="metal">Metal</option>
+          <option value="rnb">R&B</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+
+      {/* ================= IMAGE ================= */}
+      <div>
+        <h2 className="text-lg font-semibold mb-4 text-zinc-300">
+          Image
+        </h2>
+
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleImageUpload}
+          className="w-full"
+        />
+
+        {hasImage && (
+          <img
+            src={form.image}
+            className="w-full h-64 object-cover rounded-xl mt-4"
+          />
+        )}
+      </div>
+
+      {/* ================= OPTIONS ================= */}
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+
+        <label className="flex items-center gap-2 text-zinc-300">
+          <input
+            type="checkbox"
+            checked={form.featured}
+            onChange={() =>
+              setForm((prev) => ({
+                ...prev,
+                featured: !prev.featured,
+              }))
+            }
+          />
+          Featured concert
+        </label>
+
+        <select
+          name="status"
+          value={form.status}
+          onChange={handleChange}
+          className="p-3 rounded-xl bg-zinc-950 border border-zinc-800"
+        >
+          <option value="upcoming">Upcoming</option>
+          <option value="cancelled">Cancelled</option>
+          <option value="sold_out">Sold Out</option>
+          <option value="past">Past</option>
+        </select>
+
+      </div>
+
+      {/* ================= SUBMIT ================= */}
+      <button
+        disabled={loading}
+        className="w-full py-3 rounded-xl bg-[#1B5E4A] hover:bg-[#164a3a] transition font-semibold"
+      >
+        {loading ? "Creating..." : "Create Concert"}
+      </button>
+
+    </form>
+  </div>
+</div>
   );
 }
 

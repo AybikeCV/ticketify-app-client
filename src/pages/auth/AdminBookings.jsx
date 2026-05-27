@@ -65,83 +65,66 @@ const safeBookings = Array.isArray(bookings) ? bookings : [];
 
   return (
 
-    <div className="bg-zinc-950 min-h-screen text-zinc-100">
+     <div className="bg-zinc-950 min-h-screen text-zinc-100">
 
       <div className="max-w-7xl mx-auto px-4 py-16">
 
+        {/* BACK */}
+        <Link
+          to="/dashboard"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-zinc-800 bg-zinc-900 hover:bg-zinc-800 transition text-sm text-zinc-300 mb-6"
+        >
+          ← Dashboard
+        </Link>
+
         {/* HEADER */}
-
         <div>
-
-          <h1 className="text-5xl font-bold">
+          <h1 className="text-3xl md:text-5xl font-bold">
             Booking Management
           </h1>
 
-          <p className="text-zinc-500 mt-4">
+          <p className="text-zinc-500 mt-3 md:mt-4">
             Manage concert bookings and cancellations.
           </p>
-
         </div>
 
+        {/* SEARCH */}
         <input
-  placeholder="Search bookings by title, artist or user to manage them..."
-  value={search}
-  onChange={(e) => setSearch(e.target.value)}
-  className="w-full bg-zinc-900 text-zinc-100 p-3 rounded-xl border border-zinc-800"
-/>
+          placeholder="Search bookings..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="w-full mt-8 bg-zinc-900 text-zinc-100 p-3 rounded-xl border border-zinc-800"
+        />
 
-
-        {/* TABLE */}
-
-        <div className="mt-12 overflow-x-auto rounded-2xl border border-zinc-800">
+        {/* ================= DESKTOP TABLE ================= */}
+        <div className="hidden md:block mt-12 overflow-x-auto rounded-2xl border border-zinc-800">
 
           <table className="w-full">
 
             <thead className="bg-zinc-900 border-b border-zinc-800">
 
               <tr className="text-left">
-
-                <th className="p-5">
-                  User
-                </th>
-
-                <th className="p-5">
-                  Concert
-                </th>
-
-                <th className="p-5">
-                  Quantity
-                </th>
-
-                <th className="p-5">
-                  Total
-                </th>
-
-                <th className="p-5">
-                  Status
-                </th>
-
-                <th className="p-5">
-                  Actions
-                </th>
-
+                <th className="p-5">User</th>
+                <th className="p-5">Concert</th>
+                <th className="p-5">Quantity</th>
+                <th className="p-5">Total</th>
+                <th className="p-5">Status</th>
+                <th className="p-5">Actions</th>
               </tr>
 
             </thead>
 
             <tbody>
 
-              {bookings.length === 0 ? (
+              {filteredBookings.length === 0 ? (
 
                 <tr>
-
                   <td
                     colSpan="6"
                     className="p-8 text-center text-zinc-500"
                   >
                     No bookings found
                   </td>
-
                 </tr>
 
               ) : (
@@ -153,12 +136,8 @@ const safeBookings = Array.isArray(bookings) ? bookings : [];
                     className="border-b border-zinc-800"
                   >
 
-                    {/* USER */}
-
                     <td className="p-5">
-
                       <div>
-
                         <p className="font-semibold">
                           {booking.user?.name}
                         </p>
@@ -166,17 +145,11 @@ const safeBookings = Array.isArray(bookings) ? bookings : [];
                         <p className="text-zinc-500 text-sm">
                           {booking.user?.email}
                         </p>
-
                       </div>
-
                     </td>
 
-                    {/* CONCERT */}
-
                     <td className="p-5">
-
                       <div>
-
                         <p className="font-semibold">
                           {booking.concert?.title}
                         </p>
@@ -188,42 +161,32 @@ const safeBookings = Array.isArray(bookings) ? bookings : [];
                               ).toLocaleDateString()
                             : "No date"}
                         </p>
-
                       </div>
-
                     </td>
-
-                    {/* QUANTITY */}
 
                     <td className="p-5">
                       {booking.quantity}
                     </td>
 
-                    {/* TOTAL */}
-
                     <td className="p-5">
                       €{booking.totalPrice}
                     </td>
-
-            {/* STATUS */}
 
                     <td className="p-5">
 
                       <span
                         className={`px-3 py-1 rounded-full text-sm font-medium ${
                           booking.status === "confirmed"
-  ? "bg-green-500/10 text-green-400"
-  : booking.status === "cancel_requested"
-  ? "bg-yellow-500/10 text-yellow-400"
-  : "bg-red-500/10 text-red-400"
+                            ? "bg-green-500/10 text-green-400"
+                            : booking.status === "cancel_requested"
+                            ? "bg-yellow-500/10 text-yellow-400"
+                            : "bg-red-500/10 text-red-400"
                         }`}
                       >
                         {booking.status}
                       </span>
 
                     </td>
-
-                    {/* ACTIONS */}
 
                     <td className="p-5">
 
@@ -244,6 +207,71 @@ const safeBookings = Array.isArray(bookings) ? bookings : [];
             </tbody>
 
           </table>
+
+        </div>
+
+        {/* ================= MOBILE CARDS ================= */}
+        <div className="md:hidden mt-10 space-y-4">
+
+          {filteredBookings.map((booking) => (
+
+            <div
+              key={booking._id}
+              className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4"
+            >
+
+              <div>
+                <p className="font-semibold">
+                  {booking.user?.name}
+                </p>
+
+                <p className="text-zinc-500 text-sm">
+                  {booking.user?.email}
+                </p>
+              </div>
+
+              <div className="mt-4 space-y-1 text-sm text-zinc-400">
+
+                <p>
+                  Concert: {booking.concert?.title}
+                </p>
+
+                <p>
+                  Quantity: {booking.quantity}
+                </p>
+
+                <p>
+                  Total: €{booking.totalPrice}
+                </p>
+
+              </div>
+
+              <div className="mt-4">
+
+                <span
+                  className={`px-3 py-1 rounded-full text-sm font-medium ${
+                    booking.status === "confirmed"
+                      ? "bg-green-500/10 text-green-400"
+                      : booking.status === "cancel_requested"
+                      ? "bg-yellow-500/10 text-yellow-400"
+                      : "bg-red-500/10 text-red-400"
+                  }`}
+                >
+                  {booking.status}
+                </span>
+
+              </div>
+
+              <Link
+                to={`/dashboard/bookings/edit/${booking._id}`}
+                className="block text-center mt-4 px-4 py-2 rounded-lg border border-zinc-700"
+              >
+                Manage
+              </Link>
+
+            </div>
+
+          ))}
 
         </div>
 

@@ -2,117 +2,109 @@ import { useState } from "react";
 import service from "../services/index.services";
 import toast from "react-hot-toast";
 import DeleteFunction from "./DeleteFunction";
-import { useNavigate } from "react-router-dom";
 
-function BookingCard({booking, refreshBookings,}) {
+function BookingCard({ booking, refreshBookings }) {
+  const [showCancel, setShowCancel] = useState(false);
 
   const concert = booking.concert;
- 
-  const [showCancel, setShowCancel] = useState(false);
-const handleCancelBooking = async () => {
-  try {
+  const isDeletedConcert = !concert;
 
-    await service.patch(`/bookings/${booking._id}`);
+  const handleCancelBooking = async () => {
+    try {
+      await service.patch(`/bookings/${booking._id}`);
+      toast.success("Booking cancelled");
+      refreshBookings();
+    } catch (error) {
+      toast.error(
+        error.response?.data?.errorMessage ||
+          "Failed to cancel booking"
+      );
+    } finally {
+      setShowCancel(false);
+    }
+  };
 
-    toast.success("Booking cancelled");
-
-    refreshBookings();
-
-  } catch (error) {
-
-    toast.error(
-      error.response?.data?.errorMessage ||
-      "Failed to cancel booking"
-    );
-
-  } finally {
-
-    setShowCancel(false);
-
-  }
-};
-      return (
-
+  return (
     <div className="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden">
 
       {/* IMAGE */}
       <img
-        src={concert.image}
-        alt={concert.title}
-        className="h-56 w-full object-cover"
+        src={
+          concert?.image ||
+          "https://via.placeholder.com/600x400?text=Concert+Unavailable"
+        }
+        alt={concert?.title || "Concert unavailable"}
+        className="h-56 w-full object-cover opacity-80"
       />
 
       {/* CONTENT */}
       <div className="p-6">
 
         <h3 className="text-2xl font-bold">
-          {concert.title}
+          {concert?.title || "Concert no longer available"}
         </h3>
 
         <p className="text-[#1B5E4A] mt-2">
-          {concert.artist}
+          {concert?.artist || "—"}
         </p>
 
         <div className="mt-6 space-y-2 text-zinc-400">
 
           <p>
-            Venue:{" "}
-            {concert.venue.name}
+            Venue: {concert?.venue?.name || "Not available"}
           </p>
 
           <p>
-            Tickets:{" "}
-            {booking.quantity}
+            Tickets: {booking.quantity}
           </p>
 
           <p>
-            Total: €
-            {booking.totalPrice}
+            Total: €{booking.totalPrice}
           </p>
 
           <p>
             Status:{" "}
-
             <span
               className={
-                booking.status ===
-                "confirmed"
-
+                booking.status === "confirmed"
                   ? "text-green-500"
-
                   : "text-red-500"
               }
             >
               {booking.status}
             </span>
-
           </p>
-
         </div>
 
-
-        {/* BUTTON */}
-        {booking.status === "confirmed" && ( 
-          <button onClick={() => setShowCancel(true)}
-  className="mt-8 px-5 py-3 rounded-lg border border-red-500/30 bg-red-500/10 hover:bg-red-500/20 transition"
->
-  Cancel Booking
-</button>
-
+        {/* 🚨 DELETED CONCERT MESSAGE */}
+        {isDeletedConcert && (
+          <div className="mt-4 p-4 rounded-lg border border-red-500/30 bg-red-500/10 text-red-400 text-sm">
+            This concert is no longer available.  
+            Your booking has been cancelled automatically.
+          </div>
         )}
 
+        {/* BUTTON */}
+        {booking.status === "confirmed" && !isDeletedConcert && (
+          <button
+            onClick={() => setShowCancel(true)}
+            className="mt-8 px-5 py-3 rounded-lg border border-red-500/30 bg-red-500/10 hover:bg-red-500/20 transition"
+          >
+            Cancel Booking
+          </button>
+        )}
       </div>
-{showCancel && (
-  <DeleteFunction
-    isOpen={showCancel}
-    onClose={() => setShowCancel(false)}
-    onConfirm={handleCancelBooking}
-    title="Cancel Booking"
-    message="Are you sure you want to cancel this booking?"
-  />
-)}
 
-
+      {/* MODAL */}
+      {showCancel && (
+        <DeleteFunction
+          isOpen={showCancel}
+          onClose={() => setShowCancel(false)}
+          onConfirm={handleCancelBooking}
+          title="Cancel Booking"
+          message="Are you sure you want to cancel this booking?"
+        />
+      )}
     </div>
   );
 }
