@@ -1,18 +1,19 @@
-import "../index.css"
-import { useContext } from "react"
-import { ConcertContext } from "../contexts/concertapi.context"
-import { useNavigate } from "react-router-dom"
-import ConcertCard from "../components/ConcertCard"
+import "../index.css";
+import { useContext } from "react";
+import { ConcertContext } from "../contexts/concertapi.context";
+import ConcertCard from "../components/ConcertCard";
 
 function AllConcerts() {
+  const { allConcerts } = useContext(ConcertContext);
 
+  const safeConcerts = Array.isArray(allConcerts)
+    ? allConcerts
+    : [];
 
-    const { allConcerts } = useContext(ConcertContext);
-
-  if (!allConcerts) {
+  if (!safeConcerts.length) {
     return (
       <div className="text-center py-20 text-zinc-400">
-        Loading concerts...
+        No concerts available
       </div>
     );
   }
@@ -26,7 +27,7 @@ function AllConcerts() {
 
       <div className="max-w-7xl mx-auto grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
 
-        {allConcerts.map((concert) => (
+        {safeConcerts.map((concert) => (
           <ConcertCard
             key={concert._id}
             concert={concert}
@@ -37,7 +38,6 @@ function AllConcerts() {
 
     </div>
   );
-
 }
 
-export default AllConcerts
+export default AllConcerts;

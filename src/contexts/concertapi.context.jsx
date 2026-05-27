@@ -16,7 +16,7 @@ const getConcertData = async () => {
     try {
       const response = await service.get("/concerts");
       console.log(response.data);
-      setAllConcerts(response.data);
+      setAllConcerts(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
       console.log(error);
       
