@@ -6,19 +6,25 @@ import { useState } from "react";
 import toast from "react-hot-toast"
 import service from "../services/index.services";
 import Loader from "../components/Loader";
+import { useNavigate } from "react-router-dom";
 
 
 
 function ConcertDetail() {
 
   const { id } = useParams();
+  const navigate = useNavigate()
 
   const { allConcerts } = useContext(ConcertContext);
     const [quantity, setQuantity] = useState(1)
 
-  const concert = allConcerts.find(
-    (c) => c._id === id
-  );
+  const safeConcerts = Array.isArray(allConcerts)
+  ? allConcerts
+  : [];
+
+const concert = safeConcerts.find(
+  (c) => c._id === id
+);
 
   if (!concert) {
     return <Loader />
@@ -37,9 +43,11 @@ function ConcertDetail() {
 
     console.log(response.data);
 
-    toast.success(
-      "Booking successful!"
-    );
+   toast.success("Booking successful!");
+
+setTimeout(() => {
+  navigate("/profile");
+}, 500);
 
   } catch (error) {
 
@@ -82,7 +90,7 @@ function ConcertDetail() {
 
           <p>
             <span className="text-zinc-500">Venue:</span>{" "}
-            <Link to={`/venues/${concert.venue._id}`}>{concert.venue.name}</Link>
+            <Link to={`/venues/${concert?.venue?._id}`}>{concert?.venue?.name}</Link>
           </p>
 
 
@@ -91,6 +99,18 @@ function ConcertDetail() {
             <span className="text-zinc-500">Date:</span>{" "}
             {new Date(concert.date).toLocaleDateString()}
           </p>
+
+                           <p>
+  <span className="text-zinc-500">Time:</span>{" "}
+  {new Date(concert.date).toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  })}
+</p>
+<p>
+  <span className="text-zinc-500">Doors Open:</span>{" "}
+  {concert.doorsOpen || "Not announced"}
+</p>
 
           <p>
             <span className="text-zinc-500">Price:</span>{" "}
@@ -139,6 +159,22 @@ function ConcertDetail() {
   Book Ticket
 </button>
 
+<div className="mt-6 flex gap-4 flex-wrap">
+
+  <Link
+    to="/"
+    className="px-5 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 transition"
+  >
+    Home
+  </Link>
+
+  <Link
+    to="/concerts"
+    className="px-5 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 transition"
+  >
+    Concerts
+  </Link>
+</div>
       </div>
     </div>
   );

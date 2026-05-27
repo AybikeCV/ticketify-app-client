@@ -162,6 +162,16 @@ const handleDeleteProfile = async () => {
 
         </div>
 
+        <div className="mt-6 flex gap-4 flex-wrap justify-center">
+
+  <Link
+    to="/"
+    className="px-5 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 transition"
+  >
+    Home
+  </Link> 
+  </div>
+
         <br/>
         <br/>
 
@@ -196,7 +206,7 @@ const handleDeleteProfile = async () => {
 
             <div className="grid md:grid-cols-2 gap-6">
 
-              {filteredBookings.map((booking) => (
+              {filteredMyBookings.map((booking) => (
 
                 <BookingCard
                   key={booking._id}

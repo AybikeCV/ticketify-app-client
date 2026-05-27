@@ -30,8 +30,11 @@ if (!allVenues) {
   }
 
   const { venue, upcomingConcerts } = allVenues;
+  const safeUpcomingConcerts = Array.isArray(upcomingConcerts)
+  ? upcomingConcerts
+  : [];
 
-  const coordinates = venue.location.coordinates;
+  const coordinates = venue?.location?.coordinates || [0,0];
 
   return (
     <div className="bg-zinc-950 min-h-screen text-zinc-100">
@@ -54,9 +57,15 @@ if (!allVenues) {
           {venue.name}
         </h1>
 
+    <p className="text-zinc-400 mt-2">
+  {venue.address}
+</p>
+
         <p className="text-zinc-400 mt-3">
           {venue.city}, {venue.country}
         </p>
+
+    
 
         <p className="text-zinc-300 mt-6 leading-relaxed max-w-3xl">
           {venue.description}
@@ -97,6 +106,16 @@ if (!allVenues) {
 
           </MapContainer>
 
+<a
+  href={`https://www.google.com/maps?q=${coordinates[1]},${coordinates[0]}`}
+  target="_blank"
+  rel="noreferrer"
+  className="text-[#1B5E4A] hover:underline"
+>
+  Open in Maps
+</a>
+
+
         </div>
 
         {/* UPCOMING CONCERTS */}
@@ -108,7 +127,7 @@ if (!allVenues) {
 
           <div className="grid md:grid-cols-2 gap-6">
 
-            {upcomingConcerts.map((concert) => (
+            {safeUpcomingConcerts.map((concert) => (
 
               <Link
                 key={concert._id}
@@ -137,6 +156,8 @@ if (!allVenues) {
                       {new Date(concert.date)
                         .toLocaleDateString()}
                     </p>
+
+   
 
                   </div>
 

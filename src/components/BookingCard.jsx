@@ -2,33 +2,33 @@ import { useState } from "react";
 import service from "../services/index.services";
 import toast from "react-hot-toast";
 import DeleteFunction from "./DeleteFunction";
-
+import { useNavigate } from "react-router-dom";
 
 function BookingCard({booking, refreshBookings,}) {
 
   const concert = booking.concert;
  
   const [showCancel, setShowCancel] = useState(false);
-
-  
-  
-
- const handleCancelBooking = async () => {
+const handleCancelBooking = async () => {
   try {
-    setLoading(true);
 
     await service.patch(`/bookings/${booking._id}`);
 
     toast.success("Booking cancelled");
 
-    navigate("/dashboard/bookings");
+    refreshBookings();
+
   } catch (error) {
+
     toast.error(
-      error.response?.data?.errorMessage || "Failed to cancel booking"
+      error.response?.data?.errorMessage ||
+      "Failed to cancel booking"
     );
+
   } finally {
-  
+
     setShowCancel(false);
+
   }
 };
       return (

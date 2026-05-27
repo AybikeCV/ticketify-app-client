@@ -35,8 +35,8 @@ if (!allVenues || !allConcerts) {
     return <Loader/>
   }
 
-const concerts = allConcerts || []
-const venues = allVenues || []
+const concerts = Array.isArray(allConcerts) ? allConcerts : [];
+const venues = Array.isArray(allVenues) ? allVenues : [];
 
 const filteredConcerts = Array.isArray(concerts)
   ? concerts.filter((c) =>

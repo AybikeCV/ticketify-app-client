@@ -112,11 +112,12 @@ function AdminUsers() {
     );
   }
 
-  const filteredUser = users.filter((u) =>
-  u.name.toLowerCase().includes(search.toLowerCase()) ||
-  u.email.toLowerCase().includes(search.toLowerCase()) ||
-  u.role.toLowerCase().includes(search.toLowerCase()) ||
-  u._id.toLowerCase().includes(search.toLowerCase())
+  const safeUsers = Array.isArray(users) ? users : [];
+const filteredUser = safeUsers.filter((u) =>
+  (u.name || "").toLowerCase().includes(search.toLowerCase()) ||
+  (u.email || "").toLowerCase().includes(search.toLowerCase()) ||
+  (u.role || "").toLowerCase().includes(search.toLowerCase()) ||
+  (u._id || "").toLowerCase().includes(search.toLowerCase())
 );
 
   return (
