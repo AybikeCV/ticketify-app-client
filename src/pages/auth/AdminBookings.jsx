@@ -50,21 +50,17 @@ function AdminBookings() {
   }
 
 
+const safeBookings = Array.isArray(bookings) ? bookings : [];
 
- const filteredBookings = (bookings || []).filter((b) => {
+ const filteredBookings = safeBookings.filter((b) => {
   const concertTitle = b?.concert?.title || "";
-  const concertArtist = b?.concert?.artist || ""
-  const userName = b?.user?.name || "";
-
-console.log(b.concert)
+  const concertArtist = b?.concert?.artist || "";
 
   return (
     concertTitle.toLowerCase().includes(search.toLowerCase()) ||
-    concertArtist.toLowerCase().includes(search.toLowerCase()) ||
-    userName.toLowerCase().includes(search.toLowerCase())
+    concertArtist.toLowerCase().includes(search.toLowerCase())
   );
 });
-
 
 
   return (

@@ -7,9 +7,11 @@ function ConcertFeaturedSlider() {
 
   const { allConcerts } = useContext(ConcertContext);
 
-  const featuredConcerts = allConcerts.filter(
-    (c) => c.featured
-  );
+  const featuredConcerts = Array.isArray(allConcerts)
+  ? allConcerts.filter((c) => c.featured)
+  : [];
+
+
 
   const sliderRef = useRef(null)
 

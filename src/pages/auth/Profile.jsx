@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import BookingCard from "../../components/BookingCard";
 import { Link, useNavigate } from "react-router-dom"
 import DeleteFunction from "../../components/DeleteFunction";
+import Loader from "../../components/Loader"
 
 
 function Profile() {
@@ -59,11 +60,16 @@ function Profile() {
     );
   }
 
+const safeMyBookings = Array.isArray(myBookings) ? myBookings : [];
+  const filteredMyBookings = safeMyBookings.filter((b) => {
+  const title = b?.concert?.title || "";
+  const artist = b?.concert?.artist || "";
 
-  const filteredBookings = myBookings.filter((b) =>
-  b.concert.title.toLowerCase().includes(search.toLowerCase()) ||
-  b.concert.artist.toLowerCase().includes(search.toLowerCase())
-);
+  return (
+    title.toLowerCase().includes(search.toLowerCase()) ||
+    artist.toLowerCase().includes(search.toLowerCase())
+  );
+});
 
 const handleDeleteProfile = async () => {
 

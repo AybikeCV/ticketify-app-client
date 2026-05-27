@@ -38,16 +38,20 @@ if (!allVenues || !allConcerts) {
 const concerts = allConcerts || []
 const venues = allVenues || []
 
-  const filteredConcerts = concerts.filter((c) =>
-  c.artist.toLowerCase().includes(search.toLowerCase()) ||
-  c.title.toLowerCase().includes(search.toLowerCase()) ||
-  c.genre.toLowerCase().includes(search.toLowerCase())
-);
+const filteredConcerts = Array.isArray(concerts)
+  ? concerts.filter((c) =>
+      c.artist.toLowerCase().includes(search.toLowerCase()) ||
+      c.title.toLowerCase().includes(search.toLowerCase()) ||
+      c.genre.toLowerCase().includes(search.toLowerCase())
+    )
+  : [];
 
-const filteredVenues = venues.filter((v) =>
-  v.name.toLowerCase().includes(search.toLowerCase()) ||
-  v.city.toLowerCase().includes(search.toLowerCase())
-);
+const filteredVenues = Array.isArray(venues)
+  ? venues.filter((v) =>
+      v.name.toLowerCase().includes(search.toLowerCase()) ||
+      v.city.toLowerCase().includes(search.toLowerCase())
+    )
+  : [];
 
 
   return (
