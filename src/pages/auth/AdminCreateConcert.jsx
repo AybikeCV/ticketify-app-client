@@ -28,7 +28,6 @@ function AdminCreateConcert() {
 
   const hasImage = Boolean(form.image)
 
-  // ---------------- FETCH VENUES ----------------
   useEffect(() => {
     const getVenues = async () => {
       try {
@@ -52,7 +51,7 @@ function AdminCreateConcert() {
     }));
   };
 
-  // ---------------- IMAGE UPLOAD ----------------
+  //IMAGE UPLOAD 
   const handleImageUpload = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -81,7 +80,7 @@ function AdminCreateConcert() {
     }
   };
 
-  // ---------------- SUBMIT ----------------
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -94,10 +93,10 @@ function AdminCreateConcert() {
 
       // refresh concerts list (if function exists)
       if (allConcerts?.length !== undefined) {
-        // optional: you can later replace with fetch function
+       
       }
 
-      // reset form
+  
       setForm({
         title: "",
         artist: "",

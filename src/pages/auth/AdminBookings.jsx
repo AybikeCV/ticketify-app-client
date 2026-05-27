@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import service from "../../services/index.services";
+import Loader from "../../components/Loader";
 
 function AdminBookings() {
 
@@ -10,9 +11,7 @@ function AdminBookings() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("")
 
-  // =========================================
-  // FETCH BOOKINGS
-  // =========================================
+
 
   useEffect(() => {
 
@@ -44,17 +43,10 @@ function AdminBookings() {
 
   }, []);
 
-  // =========================================
-  // LOADING
-  // =========================================
 
   if (loading) {
 
-    return (
-      <div className="min-h-screen bg-zinc-950 text-zinc-400 flex items-center justify-center">
-        Loading bookings...
-      </div>
-    );
+    return <Loader />
   }
 
 
@@ -73,9 +65,7 @@ console.log(b.concert)
   );
 });
 
-  // =========================================
-  // PAGE
-  // =========================================
+
 
   return (
 

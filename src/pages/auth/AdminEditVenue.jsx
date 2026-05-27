@@ -50,9 +50,7 @@ function AdminEditVenue() {
     imagePublicId: "",
   });
 
-  // =========================================
-  // FETCH VENUE
-  // =========================================
+  
   useEffect(() => {
 
     const getVenue = async () => {
@@ -96,9 +94,6 @@ function AdminEditVenue() {
 
   }, [id]);
 
-  // =========================================
-  // HANDLE INPUT
-  // =========================================
   const handleChange = (e) => {
 
     const { name, value } = e.target;
@@ -109,9 +104,9 @@ function AdminEditVenue() {
     }));
   };
 
-  // =========================================
+  
   // IMAGE UPLOAD
-  // =========================================
+ 
   const handleImageUpload = async (e) => {
 
     const file = e.target.files?.[0];
@@ -155,9 +150,7 @@ function AdminEditVenue() {
     }
   };
 
-  // =========================================
-  // SUBMIT
-  // =========================================
+
   const handleSubmit = async (e) => {
 
     e.preventDefault();
@@ -398,15 +391,16 @@ function AdminEditVenue() {
               onChange={handleImageUpload}
             />
 
-            {form.image && (
+{form.image && (
 
-              <img
-                src={form.image}
-                alt={form.name}
-                className="w-full h-72 object-cover rounded-2xl mt-4 border border-zinc-800"
-              />
+  <img
+    key={form.image}
+    src={form.image}
+    alt={form.name}
+    className="w-full h-72 object-cover rounded-2xl mt-4 border border-zinc-800"
+  />
 
-            )}
+)}
 
           </div>
 

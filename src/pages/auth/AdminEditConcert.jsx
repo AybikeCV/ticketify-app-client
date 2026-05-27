@@ -26,9 +26,6 @@ function AdminEditConcert() {
     imagePublicId: "",
   });
 
-  // -------------------------
-  // LOAD CONCERT
-  // -------------------------
   useEffect(() => {
     const getConcert = async () => {
       try {
@@ -42,9 +39,7 @@ function AdminEditConcert() {
     getConcert();
   }, [id]);
 
-  // -------------------------
-  // LOAD VENUES
-  // -------------------------
+
   useEffect(() => {
     const getVenues = async () => {
       try {
@@ -58,9 +53,7 @@ function AdminEditConcert() {
     getVenues();
   }, []);
 
-  // -------------------------
-  // INPUT HANDLER
-  // -------------------------
+
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -70,9 +63,9 @@ function AdminEditConcert() {
     }));
   };
 
-  // -------------------------
+ 
   // IMAGE UPLOAD
-  // -------------------------
+ 
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     const data = new FormData();
@@ -98,10 +91,7 @@ function AdminEditConcert() {
       setLoading(false);
     }
   };
-
-  // -------------------------
-  // SUBMIT UPDATE
-  // -------------------------
+-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -253,17 +243,19 @@ function AdminEditConcert() {
             </h2>
 
             {form.image && (
-              <img
-                src={form.image}
-                className="w-full h-64 object-cover rounded-xl mb-4"
-              />
-            )}
+  <img
+    key={form.image}
+    src={form.image}
+    className="w-full h-64 object-cover rounded-xl mb-4"
+  />
+)}
 
             <input
-              type="file"
-              className="w-full"
-              onChange={handleImageUpload}
-            />
+  type="file"
+  accept="image/*"
+  className="w-full"
+  onChange={handleImageUpload}
+/>
           </section>
 
           {/* ================= SAVE ================= */}

@@ -8,6 +8,7 @@ function Footer() {
           © {new Date().getFullYear()}{" "}
           <span className="text-[#1B5E4A]">TICKETIFY</span>
         </p>
+        <p>All the images in this project are used for learning purposes, this is a mock concert management page made for learning the MERN Stack Development purposes. Concert and dates are totally imaginary. </p>
       </div>
     </footer>
   );

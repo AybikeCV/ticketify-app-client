@@ -5,6 +5,7 @@ import { ConcertContext } from "../contexts/concertapi.context";
 import { useState } from "react";
 import toast from "react-hot-toast"
 import service from "../services/index.services";
+import Loader from "../components/Loader";
 
 
 
@@ -20,7 +21,7 @@ function ConcertDetail() {
   );
 
   if (!concert) {
-    return <Loading />
+    return <Loader />
   }
 
   const handleBooking = async () => {
