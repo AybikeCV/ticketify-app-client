@@ -5,18 +5,14 @@ import FeaturedConcertCard from "./FeaturedConcertCard";
 function ConcertFeaturedSlider() {
   const { allConcerts } = useContext(ConcertContext);
 
-
   const safeConcerts = Array.isArray(allConcerts) ? allConcerts : [];
 
-  const featuredConcerts = safeConcerts.filter(
-    (c) => c?.featured === true
-  );
+  const featuredConcerts = safeConcerts.filter((c) => c?.featured === true);
 
   const sliderRef = useRef(null);
 
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
-
 
   const scrollLeft = () => {
     sliderRef.current.scrollBy({
@@ -32,16 +28,13 @@ function ConcertFeaturedSlider() {
     });
   };
 
-
   const checkScroll = () => {
     const el = sliderRef.current;
     if (!el) return;
 
     setCanScrollLeft(el.scrollLeft > 0);
 
-    setCanScrollRight(
-      el.scrollLeft + el.clientWidth < el.scrollWidth - 5
-    );
+    setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 5);
   };
 
   useEffect(() => {
@@ -50,12 +43,8 @@ function ConcertFeaturedSlider() {
 
   return (
     <section className="py-16">
-
-    
       <div className="flex items-center justify-between mb-8">
-        <h2 className="text-3xl font-bold text-zinc-100">
-          Featured Concerts
-        </h2>
+        <h2 className="text-3xl font-bold text-zinc-100">Featured Concerts</h2>
 
         <div className="flex gap-3">
           <button
@@ -78,7 +67,6 @@ function ConcertFeaturedSlider() {
 
       {/* slider */}
       <div className="relative">
-
         {/* fading left */}
         <div className="absolute left-0 top-0 w-16 h-full bg-gradient-to-r from-zinc-950 via-zinc-950/80 to-transparent z-10 pointer-events-none" />
 
@@ -91,7 +79,6 @@ function ConcertFeaturedSlider() {
           onScroll={checkScroll}
           className="flex gap-8 overflow-x-auto pb-4 snap-x snap-mandatory scroll-smooth scrollbar-hide"
         >
-
           {featuredConcerts.map((concert) => (
             <div
               key={concert?._id}
@@ -100,11 +87,8 @@ function ConcertFeaturedSlider() {
               <FeaturedConcertCard concert={concert} />
             </div>
           ))}
-
         </div>
       </div>
-
-
     </section>
   );
 }

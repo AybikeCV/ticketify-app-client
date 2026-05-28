@@ -7,51 +7,43 @@ import { ThemeContext } from "../contexts/theme.context";
 function Navbar() {
   const [open, setOpen] = useState(false);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const { setIsLoggedIn, setLoggedUserId, isLoggedIn, loggedUserRole, setLoggedUserRole, lougoutUser } = useContext(AuthContext)
+  const {
+    setIsLoggedIn,
+    setLoggedUserId,
+    isLoggedIn,
+    loggedUserRole,
+    setLoggedUserRole,
+    lougoutUser,
+  } = useContext(AuthContext);
 
-  const { theme, toggleTheme } = useContext(ThemeContext)
-  console.log(theme)
-  console.log(toggleTheme)
+  const { theme, toggleTheme } = useContext(ThemeContext);
+  console.log(theme);
+  console.log(toggleTheme);
 
   function handleLogout(e) {
-    e.preventDefault()
+    e.preventDefault();
 
-    // destroying the token
-    localStorage.removeItem("authToken")
+    localStorage.removeItem("authToken");
 
-    // revert the states to their initial value
-    setIsLoggedIn(false)
-    setLoggedUserId(null)
-    setLoggedUserRole(null)
+    setIsLoggedIn(false);
+    setLoggedUserId(null);
+    setLoggedUserRole(null);
 
-    // navigate the user to a public page
-    navigate("/login")
-
+    navigate("/login");
   }
 
-
   return (
-    <nav className="bg-white text-zinc-900 border-zinc-200
-
-dark:bg-zinc-900 dark:text-zinc-100 dark:border-zinc-800">
-
- 
+    <nav className="bg-white text-zinc-900 border-zinc-200 dark:bg-zinc-900 dark:text-zinc-100 dark:border-zinc-800">
       <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-
-        {/* LOGO */}
         <Link to="/" className="text-3xl font-bold">
           <span className="text-[#1B5E4A]">TICKET</span>IFY
         </Link>
 
-        {/* DESKTOP NAV */}
+        {/* big screen */}
         <div className="hidden md:flex items-center gap-8">
-
-          <NavLink
-            to="/"
-            className="text-zinc-400 hover:text-white transition"
-          >
+          <NavLink to="/" className="text-zinc-400 hover:text-white transition">
             Home
           </NavLink>
 
@@ -77,9 +69,7 @@ dark:bg-zinc-900 dark:text-zinc-100 dark:border-zinc-800">
           </NavLink>
 
           {!isLoggedIn ? (
-
             <>
-
               <NavLink
                 to="/login"
                 className="text-zinc-400 hover:text-white transition"
@@ -93,13 +83,9 @@ dark:bg-zinc-900 dark:text-zinc-100 dark:border-zinc-800">
               >
                 Sign Up
               </NavLink>
-
             </>
-
           ) : (
-
             <>
-              {/* PROFILE */}
               <NavLink
                 to="/profile"
                 className="text-zinc-400 hover:text-white transition"
@@ -107,58 +93,41 @@ dark:bg-zinc-900 dark:text-zinc-100 dark:border-zinc-800">
                 Profile
               </NavLink>
 
-              {/* ADMIN */}
               {loggedUserRole === "admin" && (
-
                 <NavLink
                   to="/dashboard"
                   className="text-zinc-400 hover:text-white transition"
                 >
                   Dashboard
                 </NavLink>
-
               )}
 
-              {/* LOGOUT */}
               <button
                 onClick={handleLogout}
                 className="text-[#1B5E4A] hover:text-red-400 transition"
               >
                 Logout
               </button>
-
             </>
           )}
 
           <button
-  onClick={toggleTheme}
-  className="
-    px-3 py-2 rounded-lg
-    border border-zinc-700
-    bg-zinc-900 text-zinc-100
-    dark:bg-white dark:text-zinc-900
-    transition-colors duration-300
-  "
->
-  {theme === "dark" ? "☀️ Light" : "🌙 Dark"}
-</button>
-
+            onClick={toggleTheme}
+            className="px-3 py-2 rounded-lg border border-zinc-700 bg-zinc-900 text-zinc-100 dark:bg-white dark:text-zinc-900 transition-colors duration-300"
+          >
+            {theme === "dark" ? "☀️ Light" : "🌙 Dark"}
+          </button>
         </div>
 
-        {/* MOBILE BUTTON */}
-        <button
-          className="md:hidden"
-          onClick={() => setOpen(!open)}
-        >
+        {/* small screen button */}
+        <button className="md:hidden" onClick={() => setOpen(!open)}>
           {open ? <X size={28} /> : <Menu size={28} />}
         </button>
-
       </div>
 
-      {/* MOBILE MENU */}
+      {/* small screen */}
       {open && (
         <div className="md:hidden border-t border-zinc-800 px-4 py-4 space-y-4 bg-zinc-950">
-
           <NavLink
             to="/"
             onClick={() => setOpen(false)}
@@ -183,15 +152,11 @@ dark:bg-zinc-900 dark:text-zinc-100 dark:border-zinc-800">
             Concerts
           </NavLink>
 
-          <NavLink
-            to="/venues"
-            className="block text-zinc-400"
-          >
+          <NavLink to="/venues" className="block text-zinc-400">
             Venues
           </NavLink>
 
-           {!isLoggedIn ? (
-
+          {!isLoggedIn ? (
             <>
               <NavLink
                 to="/login"
@@ -209,9 +174,7 @@ dark:bg-zinc-900 dark:text-zinc-100 dark:border-zinc-800">
                 Sign Up
               </NavLink>
             </>
-
           ) : (
-
             <>
               <NavLink
                 to="/profile"
@@ -222,7 +185,6 @@ dark:bg-zinc-900 dark:text-zinc-100 dark:border-zinc-800">
               </NavLink>
 
               {loggedUserRole === "admin" && (
-
                 <NavLink
                   to="/dashboard"
                   onClick={() => setOpen(false)}
@@ -230,18 +192,13 @@ dark:bg-zinc-900 dark:text-zinc-100 dark:border-zinc-800">
                 >
                   Dashboard
                 </NavLink>
-
               )}
 
-              <button
-                onClick={handleLogout}
-                className="block text-red-400"
-              >
+              <button onClick={handleLogout} className="block text-red-400">
                 Logout
               </button>
             </>
           )}
-
         </div>
       )}
     </nav>
