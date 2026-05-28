@@ -1,5 +1,6 @@
 import "./index.css"
 import { Routes, Route} from "react-router-dom"
+
 import Navbar from "./components/Navbar"
 import NotFound from "./pages/NotFound"
 import Footer from "./components/Footer"
@@ -29,13 +30,30 @@ import AdminBookings from "./pages/auth/AdminBookings"
 import AdminEditBooking from "./pages/auth/AdminEditBooking"
 import EditProfile from "./pages/auth/EditProfile"
 
+import { Toaster } from "react-hot-toast"
+
 function App() {
  
 
   return (
+
+    
+
     
      <div className="min-h-screen flex flex-col bg-white text-black dark:bg-zinc-950 dark:text-zinc-100">
       
+ <Toaster
+        position="top-center"
+        toastOptions={{
+          style: {
+            background: "#18181b",
+            color: "#fff",
+            border: "1px solid #27272a",
+          },
+        }}
+      />
+
+
       <Navbar />
 
       <main className="flex-1">

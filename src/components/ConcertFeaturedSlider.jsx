@@ -5,7 +5,7 @@ import FeaturedConcertCard from "./FeaturedConcertCard";
 function ConcertFeaturedSlider() {
   const { allConcerts } = useContext(ConcertContext);
 
-  // ✅ SAFE DATA
+
   const safeConcerts = Array.isArray(allConcerts) ? allConcerts : [];
 
   const featuredConcerts = safeConcerts.filter(
@@ -17,7 +17,7 @@ function ConcertFeaturedSlider() {
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
 
-  // 🔥 RESPONSIVE SCROLL (NO FIXED PX)
+
   const scrollLeft = () => {
     sliderRef.current.scrollBy({
       left: -sliderRef.current.offsetWidth * 0.8,
@@ -32,7 +32,7 @@ function ConcertFeaturedSlider() {
     });
   };
 
-  // 🔥 CHECK SCROLL POSITION
+
   const checkScroll = () => {
     const el = sliderRef.current;
     if (!el) return;
@@ -51,7 +51,7 @@ function ConcertFeaturedSlider() {
   return (
     <section className="py-16">
 
-      {/* HEADER */}
+    
       <div className="flex items-center justify-between mb-8">
         <h2 className="text-3xl font-bold text-zinc-100">
           Featured Concerts
@@ -76,16 +76,16 @@ function ConcertFeaturedSlider() {
         </div>
       </div>
 
-      {/* SLIDER WRAPPER */}
+      {/* slider */}
       <div className="relative">
 
-        {/* LEFT FADE */}
+        {/* fading left */}
         <div className="absolute left-0 top-0 w-16 h-full bg-gradient-to-r from-zinc-950 via-zinc-950/80 to-transparent z-10 pointer-events-none" />
 
-        {/* RIGHT FADE */}
+        {/* fading right */}
         <div className="absolute right-0 top-0 w-16 h-full bg-gradient-to-l from-zinc-950 via-zinc-950/80 to-transparent z-10 pointer-events-none" />
 
-        {/* TRACK */}
+        {/* track */}
         <div
           ref={sliderRef}
           onScroll={checkScroll}
