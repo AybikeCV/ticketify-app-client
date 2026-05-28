@@ -6,37 +6,30 @@ import { AuthContext } from "../../contexts/auth.context";
 import Loader from "../../components/Loader";
 
 function EditProfile() {
-
-
-  const { loggedUserName, setLoggedUserName, setLoggedUserId, setLoggedUserRole } = useContext(AuthContext);
+  const {
+    loggedUserName,
+    setLoggedUserName,
+    setLoggedUserId,
+    setLoggedUserRole,
+  } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const [formData, setFormData] =
-    useState({
-      name: "",
-      email: "",
-      password: "",
-      avatar: "",
-    });
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    avatar: "",
+  });
 
-  const [loading, setLoading] = useState(true);
-
- 
-  // GET PROFILE
-
+  
 
   useEffect(() => {
-
     getProfile();
-
   }, []);
 
   const getProfile = async () => {
-
     try {
-
-      const response =
-        await service.get("/users/profile");
+      const response = await service.get("/users/profile");
 
       setFormData({
         name: response.data.name || "",
@@ -46,19 +39,13 @@ function EditProfile() {
       });
 
       setLoading(false);
-
     } catch (error) {
-
-      toast.error(
-        "Failed to load profile"
-      );
+      toast.error("Failed to load profile");
 
       setLoading(false);
     }
   };
 
-
-  // HANDLE CHANGE
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -93,58 +80,40 @@ function EditProfile() {
       setLoading(false);
     }
   };
- 
-  // SUBMIT
+
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  try {
-    const res = await service.patch("/users/profile", formData);
+    try {
+      const res = await service.patch("/users/profile", formData);
 
-    // 🔥 THIS is the key fix
-    setLoggedUserName(res.data.name);
-    setLoggedUserId(res.data._id);
-    setLoggedUserRole(res.data.role);
+      setLoggedUserName(res.data.name);
+      setLoggedUserId(res.data._id);
+      setLoggedUserRole(res.data.role);
 
-    toast.success("Profile updated");
-    navigate("/profile");
-
-  } catch (error) {
-    toast.error(
-      error.response?.data?.errorMessage ||
-      "Failed to update profile"
-    );
-  }
-};
-
-  // LOADING
-
+      toast.success("Profile updated");
+      navigate("/profile");
+    } catch (error) {
+      toast.error(
+        error.response?.data?.errorMessage || "Failed to update profile",
+      );
+    }
+  };
 
   if (loading) {
-
-    return <Loader/>
+    return <Loader />;
   }
 
-  
-
   return (
-
     <div className="min-h-screen bg-zinc-950 text-zinc-100">
       <div className="max-w-3xl mx-auto px-4 py-16">
-
         <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8">
-          
-          <h1 className="text-4xl font-bold">
-            Edit Profile
-          </h1>
+          <h1 className="text-4xl font-bold">Edit Profile</h1>
 
-          <p className="text-zinc-500 mt-3">
-            Update your account information.
-          </p>
+          <p className="text-zinc-500 mt-3">Update your account information.</p>
 
           <form onSubmit={handleSubmit} className="space-y-6 mt-10">
-
             {/* NAME */}
             <div>
               <label className="text-sm text-zinc-400">Name</label>
@@ -157,7 +126,6 @@ function EditProfile() {
               />
             </div>
 
-            {/* EMAIL */}
             <div>
               <label className="text-sm text-zinc-400">Email</label>
               <input
@@ -169,7 +137,6 @@ function EditProfile() {
               />
             </div>
 
-            {/* PASSWORD */}
             <div>
               <label className="text-sm text-zinc-400">New Password</label>
               <input
@@ -182,7 +149,6 @@ function EditProfile() {
               />
             </div>
 
-            {/* AVATAR */}
             <div>
               <label className="text-sm text-zinc-400">Avatar</label>
 
@@ -200,16 +166,13 @@ function EditProfile() {
               )}
             </div>
 
-            {/* BUTTON */}
             <button
               type="submit"
               className="w-full bg-[#1B5E4A] hover:bg-[#164c3c] transition rounded-xl py-4 font-semibold"
             >
               Save Changes
             </button>
-
           </form>
-
         </div>
       </div>
     </div>

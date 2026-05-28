@@ -2,7 +2,8 @@ import { motion } from "framer-motion";
 //This function initially giving messages for confirmation to delete actions but used as a messenger
 //some in other actions too
 
-function DeleteFunction({ isOpen, onClose, onConfirm, title, message }) {
+function DeleteFunction({ isOpen, onClose, onConfirm, title, message, cancelText = "Cancel",
+  confirmText = "Confirm", }) {
   if (!isOpen) return null;
 
   return (

@@ -26,7 +26,7 @@ function ConcertWrapper({ children }) {
   }
 
   return (
-    <ConcertContext.Provider value={{ allConcerts }}>
+    <ConcertContext.Provider value={{ allConcerts, setAllConcerts }}>
       {children}
     </ConcertContext.Provider>
   );

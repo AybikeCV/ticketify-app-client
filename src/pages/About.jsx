@@ -4,29 +4,24 @@ import { FaGithub, FaLinkedin } from "react-icons/fa";
 function About() {
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100 px-4 py-20 max-w-4xl mx-auto">
-
-      {/* TITLE */}
+    
       <h1 className="text-4xl font-bold text-center">
-        About{" "}
-        <span className="text-[#1B5E4A]">Ticketify</span>
+        About <span className="text-[#1B5E4A]">Ticketify</span>
       </h1>
 
-      {/* DESCRIPTION */}
       <p className="text-zinc-400 mt-6 leading-relaxed">
-        Ticketify is a concert booking and management application built with the MERN stack.
-        Users can explore concerts, view details, and book tickets through a smooth and modern interface.
+        Ticketify is a concert booking and management application built with the
+        MERN stack. Users can explore concerts, view details, and book tickets
+        through a smooth and modern interface.
       </p>
 
-      {/* FEATURES */}
       <div className="mt-8 text-zinc-300 space-y-2 text-center">
         <p>✔ Modern dark UI</p>
         <p>✔ Seat-based booking system</p>
         <p>✔ Fast and responsive experience</p>
       </div>
 
-      {/* LINKS */}
       <div className="mt-10 flex gap-6 items-center">
-
         <a
           href="https://github.com/AybikeCV"
           target="_blank"
@@ -46,7 +41,6 @@ function About() {
           <FaLinkedin className="text-xl text-[#1B5E4A]" />
           LinkedIn
         </a>
-
       </div>
     </div>
   );

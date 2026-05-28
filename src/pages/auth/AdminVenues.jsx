@@ -49,7 +49,6 @@ function AdminVenues() {
   ← Dashboard
 </Link>
 
-    {/* HEADER */}
     <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
 
       <div>
@@ -71,7 +70,7 @@ function AdminVenues() {
 
     </div>
 
-    {/* ================= DESKTOP TABLE ================= */}
+    {/* big screen */}
     <div className="hidden md:block mt-12 overflow-x-auto rounded-2xl border border-zinc-800">
 
       <table className="w-full">
@@ -95,7 +94,6 @@ function AdminVenues() {
               className="border-b border-zinc-800"
             >
 
-              {/* VENUE */}
               <td className="p-5">
                 <div className="flex items-center gap-4">
 
@@ -118,22 +116,18 @@ function AdminVenues() {
                 </div>
               </td>
 
-              {/* CITY */}
               <td className="p-5">
                 {venue.city}
               </td>
 
-              {/* CAPACITY */}
               <td className="p-5">
                 {venue.capacity}
               </td>
 
-              {/* COUNTRY */}
               <td className="p-5">
                 {venue.country}
               </td>
 
-              {/* ACTIONS */}
               <td className="p-5">
 
                 <div className="flex gap-3">
@@ -169,7 +163,7 @@ function AdminVenues() {
 
     </div>
 
-    {/* ================= MOBILE CARDS ================= */}
+    {/* small screen */}
     <div className="md:hidden space-y-4 mt-12">
 
       {allVenues?.map((venue) => (
@@ -179,7 +173,6 @@ function AdminVenues() {
           className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4"
         >
 
-          {/* TOP */}
           <div className="flex gap-4">
 
             <img
@@ -204,7 +197,6 @@ function AdminVenues() {
 
           </div>
 
-          {/* INFO */}
           <div className="mt-4 text-sm text-zinc-400 space-y-1">
 
             <p>
@@ -213,7 +205,6 @@ function AdminVenues() {
 
           </div>
 
-          {/* ACTIONS */}
           <div className="flex gap-2 mt-4">
 
             <Link
@@ -241,7 +232,6 @@ function AdminVenues() {
 
     </div>
 
-    {/* DELETE MODAL */}
     <DeleteFunction
       isOpen={showDeleteFunction}
       onClose={() => setShowDeleteFunction(false)}

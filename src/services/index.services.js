@@ -14,7 +14,7 @@ service.interceptors.request.use((config) => {
 })
 
 function handleSignup() {
-    
+
 }
 
 export default service

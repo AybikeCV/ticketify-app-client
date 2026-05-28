@@ -1,5 +1,4 @@
-import { useState, useEffect, useContext } from "react";
-
+import { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 
 import { ConcertContext } from "../../contexts/concertapi.context";
@@ -8,61 +7,43 @@ import toast from "react-hot-toast";
 import DeleteFunction from "../../components/DeleteFunction";
 
 function AdminConcerts() {
+  const { allConcerts, setAllConcerts } = useContext(ConcertContext);
 
-  const { allConcerts } =
-    useContext(ConcertContext);
-    const [showDeleteFunction, setShowDeleteFunction] = useState(false);
+  const [showDeleteFunction, setShowDeleteFunction] = useState(false);
+  const [selectedConcertId, setSelectedConcertId] = useState(null);
 
-const [selectedConcertId, setSelectedConcertId] = useState(null);
+  const handleDeleteConcert = async () => {
+    const id = selectedConcertId;
 
-   const handleDeleteConcert = async () => {
+    if (!id) return;
 
-  try {
+    try {
+      await service.delete(`/concerts/${id}`);
 
-    await service.delete(
-      `/concerts/${selectedConcertId}`
-    );
+      setAllConcerts((prev) => prev.filter((c) => c._id !== id));
 
-    toast.success("Concert deleted");
-
-    window.location.reload();
-
-  } catch (error) {
-
-    toast.error(
-      error.response?.data?.errorMessage ||
-      "Failed to delete concert"
-    );
-
-  } finally {
-
-    setShowDeleteModal(false);
-
-  }
-};
-
-
-
-
-
+      toast.success("Concert deleted");
+    } catch (error) {
+      toast.error(
+        error.response?.data?.errorMessage || "Failed to delete concert",
+      );
+    } finally {
+      setShowDeleteFunction(false);
+      setSelectedConcertId(null);
+    }
+  };
 
   return (
-
-<div className="bg-zinc-950 min-h-screen text-zinc-100">
+    <div className="bg-zinc-950 min-h-screen text-zinc-100">
       <div className="max-w-7xl mx-auto px-4 py-16">
+        <Link
+          to="/dashboard"
+          className="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-zinc-200 transition mb-6"
+        >
+          ← Back to Dashboard
+        </Link>
 
-  <Link
-    to="/dashboard"
-    className="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-zinc-200 transition mb-6"
-  >
-    ← Back to Dashboard
-  </Link>
-
-
-
-        {/* HEADER */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-
           <div>
             <h1 className="text-3xl md:text-5xl font-bold">
               Concert Management
@@ -81,11 +62,9 @@ const [selectedConcertId, setSelectedConcertId] = useState(null);
           </Link>
         </div>
 
-        {/* ================= DESKTOP TABLE ================= */}
+        {/* big screen */}
         <div className="hidden md:block mt-12 overflow-x-auto rounded-2xl border border-zinc-800">
-
           <table className="w-full">
-
             <thead className="bg-zinc-900 border-b border-zinc-800">
               <tr className="text-left">
                 <th className="p-5">Concert</th>
@@ -100,8 +79,6 @@ const [selectedConcertId, setSelectedConcertId] = useState(null);
             <tbody>
               {allConcerts?.map((concert) => (
                 <tr key={concert._id} className="border-b border-zinc-800">
-
-                  {/* CONCERT */}
                   <td className="p-5">
                     <div className="flex items-center gap-4">
                       <img
@@ -109,12 +86,8 @@ const [selectedConcertId, setSelectedConcertId] = useState(null);
                         alt={concert.title}
                         className="w-20 h-20 rounded-xl object-cover"
                       />
-
                       <div>
-                        <p className="font-semibold">
-                          {concert.title}
-                        </p>
-
+                        <p className="font-semibold">{concert.title}</p>
                         <p className="text-zinc-500 text-sm">
                           {new Date(concert.date).toLocaleDateString()}
                         </p>
@@ -126,14 +99,10 @@ const [selectedConcertId, setSelectedConcertId] = useState(null);
                   <td className="p-5">{concert.venue?.name}</td>
 
                   <td className="p-5">
-                    <span className="text-[#1B5E4A]">
-                      {concert.status}
-                    </span>
+                    <span className="text-[#1B5E4A]">{concert.status}</span>
                   </td>
 
-                  <td className="p-5">
-                    {concert.featured ? "⭐" : "-"}
-                  </td>
+                  <td className="p-5">{concert.featured ? "⭐" : "-"}</td>
 
                   <td className="p-5">
                     <div className="flex gap-3">
@@ -155,24 +124,19 @@ const [selectedConcertId, setSelectedConcertId] = useState(null);
                       </button>
                     </div>
                   </td>
-
                 </tr>
               ))}
             </tbody>
-
           </table>
         </div>
 
-        {/* ================= MOBILE CARDS ================= */}
+        {/* small screen */}
         <div className="md:hidden space-y-4 mt-12">
-
           {allConcerts?.map((concert) => (
             <div
               key={concert._id}
               className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4"
             >
-
-              {/* TOP */}
               <div className="flex gap-4">
                 <img
                   src={concert.image}
@@ -180,28 +144,20 @@ const [selectedConcertId, setSelectedConcertId] = useState(null);
                 />
 
                 <div>
-                  <p className="font-semibold">
-                    {concert.title}
-                  </p>
-
-                  <p className="text-zinc-500 text-sm">
-                    {concert.artist}
-                  </p>
-
+                  <p className="font-semibold">{concert.title}</p>
+                  <p className="text-zinc-500 text-sm">{concert.artist}</p>
                   <p className="text-zinc-500 text-xs mt-1">
                     {new Date(concert.date).toLocaleDateString()}
                   </p>
                 </div>
               </div>
 
-              {/* INFO */}
               <div className="mt-4 text-sm text-zinc-400 space-y-1">
                 <p>Venue: {concert.venue?.name}</p>
                 <p>Status: {concert.status}</p>
                 <p>Featured: {concert.featured ? "⭐" : "-"}</p>
               </div>
 
-              {/* ACTIONS */}
               <div className="flex gap-2 mt-4">
                 <Link
                   to={`/dashboard/concerts/edit/${concert._id}`}
@@ -220,23 +176,19 @@ const [selectedConcertId, setSelectedConcertId] = useState(null);
                   Delete
                 </button>
               </div>
-
             </div>
           ))}
         </div>
 
-        {/* DELETE MODAL */}
         <DeleteFunction
           isOpen={showDeleteFunction}
           onClose={() => setShowDeleteFunction(false)}
-          onConfirm={handleDeleteConcert}
-          title="Are you sure to delete the concert?"
+          onConfirm={() => handleDeleteConcert(selectedConcertId)}
+          title="Are you sure to delete this concert?"
           message="This action cannot be undone"
         />
-
       </div>
     </div>
-    
   );
 }
 

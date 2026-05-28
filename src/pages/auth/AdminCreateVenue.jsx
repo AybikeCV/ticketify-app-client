@@ -1,11 +1,11 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 import service from "../../services/index.services";
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom";
 
 function AdminCreateVenue() {
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [form, setForm] = useState({
     name: "",
@@ -29,7 +29,7 @@ function AdminCreateVenue() {
     }));
   };
 
-  // ---------------- IMAGE UPLOAD ----------------
+ 
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     const data = new FormData();
@@ -56,7 +56,7 @@ function AdminCreateVenue() {
     }
   };
 
-  // ---------------- SUBMIT ----------------
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -75,10 +75,7 @@ function AdminCreateVenue() {
 
         location: {
           type: "Point",
-          coordinates: [
-            Number(form.longitude),
-            Number(form.latitude),
-          ],
+          coordinates: [Number(form.longitude), Number(form.latitude)],
         },
       });
 
@@ -97,7 +94,6 @@ function AdminCreateVenue() {
         image: "",
         imagePublicId: "",
       });
-
     } catch (err) {
       toast.error(err.response?.data?.errorMessage || "Error creating venue");
     } finally {
@@ -108,22 +104,16 @@ function AdminCreateVenue() {
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100 p-10">
       <div className="max-w-4xl mx-auto">
-
         <h1 className="text-4xl font-bold">Create Venue</h1>
-        <p className="text-zinc-400 mb-8">
-          Add a new concert location
-        </p>
+        <p className="text-zinc-400 mb-8">Add a new concert location</p>
 
         <form
           onSubmit={handleSubmit}
           className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 space-y-8"
         >
 
-          {/* BASIC INFO */}
           <section className="space-y-4">
-            <h2 className="text-[#1B5E4A] font-semibold">
-              📍 Basic Info
-            </h2>
+            <h2 className="text-[#1B5E4A] font-semibold">📍 Basic Info</h2>
 
             <input
               name="name"
@@ -157,7 +147,6 @@ function AdminCreateVenue() {
             />
           </section>
 
-          {/* LOCATION */}
           <section>
             <h2 className="text-[#1B5E4A] font-semibold mb-4">
               🌍 Location Coordinates
@@ -182,11 +171,8 @@ function AdminCreateVenue() {
             </div>
           </section>
 
-          {/* CAPACITY */}
           <section>
-            <h2 className="text-[#1B5E4A] font-semibold mb-4">
-              🎟 Capacity
-            </h2>
+            <h2 className="text-[#1B5E4A] font-semibold mb-4">🎟 Capacity</h2>
 
             <input
               type="number"
@@ -197,7 +183,6 @@ function AdminCreateVenue() {
             />
           </section>
 
-          {/* DESCRIPTION */}
           <section>
             <h2 className="text-[#1B5E4A] font-semibold mb-4">
               📝 Description
@@ -211,11 +196,8 @@ function AdminCreateVenue() {
             />
           </section>
 
-          {/* IMAGE */}
           <section>
-            <h2 className="text-[#1B5E4A] font-semibold mb-4">
-              🖼 Image
-            </h2>
+            <h2 className="text-[#1B5E4A] font-semibold mb-4">🖼 Image</h2>
 
             <input type="file" onChange={handleImageUpload} />
 
@@ -227,14 +209,12 @@ function AdminCreateVenue() {
             )}
           </section>
 
-          {/* SUBMIT */}
           <button
             disabled={loading}
             className="w-full py-3 bg-[#1B5E4A] rounded-xl font-semibold"
           >
             {loading ? "Creating..." : "Create Venue"}
           </button>
-
         </form>
       </div>
     </div>

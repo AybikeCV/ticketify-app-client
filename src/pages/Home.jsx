@@ -69,7 +69,6 @@ function Home() {
           Find and book live concerts with a simple and modern system.
         </p>
 
-        {/* search */}
         <div className="mt-8">
           <input
             type="text"
@@ -79,12 +78,6 @@ function Home() {
             className="w-full max-w-xl mx-auto bg-zinc-900 text-zinc-100 p-3 rounded-xl border border-zinc-800 focus:outline-none"
           />
         </div>
-      </section>
-
-      {/* featured concerts */}
-
-      <section className="max-w-6xl mx-auto px-4 pb-12">
-        <ConcertFeaturedSlider />
       </section>
 
       {/* search results */}
@@ -127,7 +120,10 @@ function Home() {
         </section>
       )}
 
-      {/* homepage cards */}
+      <section className="max-w-6xl mx-auto px-4 pb-12">
+        <ConcertFeaturedSlider />
+      </section>
+
       <section className="max-w-5xl mx-auto px-4 pb-20">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {[

@@ -2,131 +2,97 @@ import { useEffect, useState } from "react";
 import service from "../../services/index.services";
 import toast from "react-hot-toast";
 import DeleteFunction from "../../components/DeleteFunction";
-import { Link, useNavigate} from "react-router-dom"
-
+import { Link, useNavigate } from "react-router-dom";
 
 function AdminUsers() {
+  const [users, setUsers] = useState([]);
 
-  const [users, setUsers] =
-    useState([]);
-
-  const [loading, setLoading] =
-    useState(true);
+  const [loading, setLoading] = useState(true);
 
   const [search, setSearch] = useState("");
 
-  const [showRole, setShowRole] = useState(false)
-  const [selectedUser, setSelectedUser] = useState(null)
-
-  
+  const [showRole, setShowRole] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
 
   useEffect(() => {
-
     getUsers();
-
   }, []);
 
   const getUsers = async () => {
-
     try {
-
-      const response =
-        await service.get("/users");
+      const response = await service.get("/users");
 
       console.log(response.data);
 
       setUsers(response.data);
 
       setLoading(false);
-
     } catch (error) {
-
       console.log(error);
 
-      toast.error(
-        "Failed to load users"
-      );
+      toast.error("Failed to load users");
 
       setLoading(false);
     }
   };
 
   // ROLE CHANGE
- const confirmRoleChange = async () => {
-  if (!selectedUser) return;
+  const confirmRoleChange = async () => {
+    if (!selectedUser) return;
 
-  try {
-    const newRole =
-      selectedUser.role === "user" ? "admin" : "user";
+    try {
+      const newRole = selectedUser.role === "user" ? "admin" : "user";
 
-    await service.patch(`/users/${selectedUser._id}`, {
-      role: newRole,
-    });
+      await service.patch(`/users/${selectedUser._id}`, {
+        role: newRole,
+      });
 
-    toast.success("Role updated");
-    await getUsers();
-  } catch (error) {
-    toast.error(
-      error.response?.data?.errorMessage ||
-        "Failed to update role"
-    );
-  } finally {
-    setShowRole(false);
-    setSelectedUser(null);
-  }
-};
+      toast.success("Role updated");
+      await getUsers();
+    } catch (error) {
+      toast.error(
+        error.response?.data?.errorMessage || "Failed to update role",
+      );
+    } finally {
+      setShowRole(false);
+      setSelectedUser(null);
+    }
+  };
   // ACTIVE CHANGE
-  const handleActiveChange =
-    async (userId, isActive) => {
+  const handleActiveChange = async (userId, isActive) => {
+    try {
+      await service.patch(`/users/${userId}`, {
+        isActive: !isActive,
+      });
 
-      try {
+      toast.success("User updated");
 
-        await service.patch(
-          `/users/${userId}`,
-          {
-            isActive: !isActive,
-          }
-        );
+      getUsers();
+    } catch (error) {
+      console.log(error);
 
-        toast.success(
-          "User updated"
-        );
-
-        getUsers();
-
-      } catch (error) {
-
-        console.log(error);
-
-        toast.error(
-          "Failed to update user"
-        );
-      }
-    };
+      toast.error("Failed to update user");
+    }
+  };
 
   if (loading) {
-
     return (
-      <div className="text-center py-20 text-zinc-400">
-        Loading users...
-      </div>
+      <div className="text-center py-20 text-zinc-400">Loading users...</div>
     );
   }
 
   const safeUsers = Array.isArray(users) ? users : [];
-const filteredUser = safeUsers.filter((u) =>
-  (u.name || "").toLowerCase().includes(search.toLowerCase()) ||
-  (u.email || "").toLowerCase().includes(search.toLowerCase()) ||
-  (u.role || "").toLowerCase().includes(search.toLowerCase()) ||
-  (u._id || "").toLowerCase().includes(search.toLowerCase())
-);
+  const filteredUser = safeUsers.filter(
+    (u) =>
+      (u.name || "").toLowerCase().includes(search.toLowerCase()) ||
+      (u.email || "").toLowerCase().includes(search.toLowerCase()) ||
+      (u.role || "").toLowerCase().includes(search.toLowerCase()) ||
+      (u._id || "").toLowerCase().includes(search.toLowerCase()),
+  );
 
   return (
-
-     <div className="bg-zinc-950 min-h-screen text-zinc-100">
-
+    <div className="bg-zinc-950 min-h-screen text-zinc-100">
       <div className="max-w-7xl mx-auto px-4 py-16">
-
         {/* BACK */}
         <Link
           to="/dashboard"
@@ -136,9 +102,7 @@ const filteredUser = safeUsers.filter((u) =>
         </Link>
 
         {/* HEADER */}
-        <h1 className="text-3xl md:text-5xl font-bold">
-          User Management
-        </h1>
+        <h1 className="text-3xl md:text-5xl font-bold">User Management</h1>
 
         <p className="text-zinc-500 mt-3 md:mt-4">
           Manage users, roles and access.
@@ -148,66 +112,42 @@ const filteredUser = safeUsers.filter((u) =>
         <input
           placeholder="Search users..."
           value={search}
-          onChange={(e) =>
-            setSearch(e.target.value)
-          }
+          onChange={(e) => setSearch(e.target.value)}
           className="w-full mt-8 bg-zinc-900 text-zinc-100 p-3 rounded-xl border border-zinc-800"
         />
 
         {/* ================= DESKTOP TABLE ================= */}
         <div className="hidden md:block mt-12 overflow-x-auto rounded-2xl border border-zinc-800">
-
           <table className="w-full">
-
             <thead className="bg-zinc-900 border-b border-zinc-800">
-
               <tr className="text-left">
                 <th className="p-5">User</th>
                 <th className="p-5">Role</th>
                 <th className="p-5">Status</th>
                 <th className="p-5">Actions</th>
               </tr>
-
             </thead>
 
             <tbody>
-
               {filteredUser.map((user) => (
-
-                <tr
-                  key={user._id}
-                  className="border-b border-zinc-800"
-                >
-
+                <tr key={user._id} className="border-b border-zinc-800">
                   <td className="p-5">
-
                     <div className="flex items-center gap-4">
-
                       <img
-                        src={
-                          user.avatar ||
-                          "https://i.pravatar.cc/150?img=3"
-                        }
+                        src={user.avatar || "https://i.pravatar.cc/150?img=3"}
                         alt={user.name}
                         className="w-12 h-12 rounded-full object-cover border border-zinc-700"
                       />
 
                       <div>
-                        <p className="font-semibold">
-                          {user.name}
-                        </p>
+                        <p className="font-semibold">{user.name}</p>
 
-                        <p className="text-zinc-500 text-sm">
-                          {user.email}
-                        </p>
+                        <p className="text-zinc-500 text-sm">{user.email}</p>
                       </div>
-
                     </div>
-
                   </td>
 
                   <td className="p-5">
-
                     <span
                       className={
                         user.role === "admin"
@@ -217,36 +157,24 @@ const filteredUser = safeUsers.filter((u) =>
                     >
                       {user.role}
                     </span>
-
                   </td>
 
                   <td className="p-5">
-
                     <span
                       className={
-                        user.isActive
-                          ? "text-green-500"
-                          : "text-red-500"
+                        user.isActive ? "text-green-500" : "text-red-500"
                       }
                     >
-                      {user.isActive
-                        ? "Active"
-                        : "Inactive"}
+                      {user.isActive ? "Active" : "Inactive"}
                     </span>
-
                   </td>
 
                   <td className="p-5">
-
                     <div className="flex flex-wrap gap-3">
-
                       <button
                         onClick={() => {
-
                           if (user.role === "admin") {
-                            toast.error(
-                              "You cannot change an admin's role."
-                            );
+                            toast.error("You cannot change an admin's role.");
                             return;
                           }
 
@@ -260,87 +188,53 @@ const filteredUser = safeUsers.filter((u) =>
 
                       <button
                         onClick={() =>
-                          handleActiveChange(
-                            user._id,
-                            user.isActive
-                          )
+                          handleActiveChange(user._id, user.isActive)
                         }
                         className="px-4 py-2 rounded-lg border border-red-500/30 bg-red-500/10 hover:bg-red-500/20 transition"
                       >
-                        {user.isActive
-                          ? "Deactivate"
-                          : "Activate"}
+                        {user.isActive ? "Deactivate" : "Activate"}
                       </button>
-
                     </div>
-
                   </td>
-
                 </tr>
-
               ))}
-
             </tbody>
-
           </table>
-
         </div>
 
         {/* ================= MOBILE CARDS ================= */}
         <div className="md:hidden mt-10 space-y-4">
-
           {filteredUser.map((user) => (
-
             <div
               key={user._id}
               className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4"
             >
-
               <div className="flex items-center gap-4">
-
                 <img
-                  src={
-                    user.avatar ||
-                    "https://i.pravatar.cc/150?img=3"
-                  }
+                  src={user.avatar || "https://i.pravatar.cc/150?img=3"}
                   alt={user.name}
                   className="w-14 h-14 rounded-full object-cover border border-zinc-700"
                 />
 
                 <div>
-                  <p className="font-semibold">
-                    {user.name}
-                  </p>
+                  <p className="font-semibold">{user.name}</p>
 
-                  <p className="text-zinc-500 text-sm">
-                    {user.email}
-                  </p>
+                  <p className="text-zinc-500 text-sm">{user.email}</p>
                 </div>
-
               </div>
 
               <div className="mt-4 text-sm text-zinc-400 space-y-2">
+                <p>Role: {user.role}</p>
 
-                <p>
-                  Role: {user.role}
-                </p>
-
-                <p>
-                  Status: {user.isActive
-                    ? "Active"
-                    : "Inactive"}
-                </p>
-
+                <p>Status: {user.isActive ? "Active" : "Inactive"}</p>
               </div>
 
               <div className="flex gap-2 mt-4">
-
                 <button
                   onClick={() => {
-
                     if (user.role === "admin") {
                       toast.error(
-                        "You cannot change an admin's role."
+                        "You cannot change another admin's or your role.",
                       );
                       return;
                     }
@@ -354,31 +248,18 @@ const filteredUser = safeUsers.filter((u) =>
                 </button>
 
                 <button
-                  onClick={() =>
-                    handleActiveChange(
-                      user._id,
-                      user.isActive
-                    )
-                  }
+                  onClick={() => handleActiveChange(user._id, user.isActive)}
                   className="flex-1 px-3 py-2 rounded-lg border border-red-500/30 bg-red-500/10"
                 >
-                  {user.isActive
-                    ? "Deactivate"
-                    : "Activate"}
+                  {user.isActive ? "Deactivate" : "Activate"}
                 </button>
-
               </div>
-
             </div>
-
           ))}
-
         </div>
-
       </div>
 
       {showRole && selectedUser && (
-
         <DeleteFunction
           isOpen={showRole}
           onClose={() => {
@@ -389,9 +270,7 @@ const filteredUser = safeUsers.filter((u) =>
           title="Change Role"
           message={`Change role for ${selectedUser.name}?`}
         />
-
       )}
-
     </div>
   );
 }
