@@ -36,7 +36,7 @@ function AdminUsers() {
     }
   };
 
-  // ROLE CHANGE
+
   const confirmRoleChange = async () => {
     if (!selectedUser) return;
 
@@ -58,7 +58,7 @@ function AdminUsers() {
       setSelectedUser(null);
     }
   };
-  // ACTIVE CHANGE
+
   const handleActiveChange = async (userId, isActive) => {
     try {
       await service.patch(`/users/${userId}`, {
@@ -93,7 +93,7 @@ function AdminUsers() {
   return (
     <div className="bg-zinc-950 min-h-screen text-zinc-100">
       <div className="max-w-7xl mx-auto px-4 py-16">
-        {/* BACK */}
+  
         <Link
           to="/dashboard"
           className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-zinc-800 bg-zinc-900 hover:bg-zinc-800 transition text-sm text-zinc-300 mb-6"
@@ -101,14 +101,12 @@ function AdminUsers() {
           ← Dashboard
         </Link>
 
-        {/* HEADER */}
         <h1 className="text-3xl md:text-5xl font-bold">User Management</h1>
 
         <p className="text-zinc-500 mt-3 md:mt-4">
           Manage users, roles and access.
         </p>
 
-        {/* SEARCH */}
         <input
           placeholder="Search users..."
           value={search}
@@ -116,7 +114,7 @@ function AdminUsers() {
           className="w-full mt-8 bg-zinc-900 text-zinc-100 p-3 rounded-xl border border-zinc-800"
         />
 
-        {/* ================= DESKTOP TABLE ================= */}
+        {/* big screen */}
         <div className="hidden md:block mt-12 overflow-x-auto rounded-2xl border border-zinc-800">
           <table className="w-full">
             <thead className="bg-zinc-900 border-b border-zinc-800">
@@ -202,7 +200,7 @@ function AdminUsers() {
           </table>
         </div>
 
-        {/* ================= MOBILE CARDS ================= */}
+        {/* small screen */}
         <div className="md:hidden mt-10 space-y-4">
           {filteredUser.map((user) => (
             <div

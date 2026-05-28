@@ -2,7 +2,7 @@ import { useState, useContext } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { AuthContext } from "../contexts/auth.context";
-import { ThemeContext } from "../contexts/theme.context";
+//import { ThemeContext } from "../contexts/theme.context";
 
 function Navbar() {
   const [open, setOpen] = useState(false);
@@ -18,9 +18,9 @@ function Navbar() {
     lougoutUser,
   } = useContext(AuthContext);
 
-  const { theme, toggleTheme } = useContext(ThemeContext);
-  console.log(theme);
-  console.log(toggleTheme);
+  //const { theme, toggleTheme } = useContext(ThemeContext);//
+  // console.log(theme);//
+  // console.log(toggleTheme);//
 
   function handleLogout(e) {
     e.preventDefault();
@@ -111,12 +111,12 @@ function Navbar() {
             </>
           )}
 
-          <button
+         {/* <button
             onClick={toggleTheme}
             className="px-3 py-2 rounded-lg border border-zinc-700 bg-zinc-900 text-zinc-100 dark:bg-white dark:text-zinc-900 transition-colors duration-300"
           >
             {theme === "dark" ? "☀️ Light" : "🌙 Dark"}
-          </button>
+          </button>*/}
         </div>
 
         {/* small screen button */}
@@ -129,26 +129,17 @@ function Navbar() {
       {open && (
         <div className="md:hidden border-t border-zinc-800 px-4 py-4 space-y-4 bg-zinc-950">
           <NavLink
-            to="/"
-            onClick={() => setOpen(false)}
-            className="block text-zinc-400"
-          >
+            to="/" onClick={() => setOpen(false)} className="block text-zinc-400">
             Home
           </NavLink>
 
           <NavLink
-            to="/about"
-            onClick={() => setOpen(false)}
-            className="block text-zinc-400"
-          >
+            to="/about" onClick={() => setOpen(false)} className="block text-zinc-400">
             About
           </NavLink>
 
           <NavLink
-            to="/concerts"
-            onClick={() => setOpen(false)}
-            className="block text-zinc-400"
-          >
+            to="/concerts" onClick={() => setOpen(false)} className="block text-zinc-400">
             Concerts
           </NavLink>
 
@@ -159,37 +150,24 @@ function Navbar() {
           {!isLoggedIn ? (
             <>
               <NavLink
-                to="/login"
-                onClick={() => setOpen(false)}
-                className="block text-zinc-400"
-              >
+                to="/login" onClick={() => setOpen(false)}className="block text-zinc-400">
                 Login
               </NavLink>
 
-              <NavLink
-                to="/signup"
-                onClick={() => setOpen(false)}
-                className="block w-fit px-4 py-2 rounded-lg bg-[#1B5E4A]/20 border border-[#1B5E4A]/40"
-              >
+              <NavLink to="/signup" onClick={() => setOpen(false)} className="block w-fit px-4 py-2 rounded-lg bg-[#1B5E4A]/20 border border-[#1B5E4A]/40">
                 Sign Up
               </NavLink>
             </>
           ) : (
             <>
               <NavLink
-                to="/profile"
-                onClick={() => setOpen(false)}
-                className="block text-zinc-400"
-              >
+                to="/profile" onClick={() => setOpen(false)} className="block text-zinc-400">
                 Profile
               </NavLink>
 
               {loggedUserRole === "admin" && (
                 <NavLink
-                  to="/dashboard"
-                  onClick={() => setOpen(false)}
-                  className="block text-zinc-400"
-                >
+                  to="/dashboard" onClick={() => setOpen(false)} className="block text-zinc-400" >
                   Dashboard
                 </NavLink>
               )}

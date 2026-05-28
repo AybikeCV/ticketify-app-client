@@ -10,7 +10,7 @@ function About() {
       </h1>
 
       <p className="text-zinc-400 mt-6 leading-relaxed">
-        Ticketify is a concert booking and management application built with the
+        Ticketify is a concert booking and management website built with the
         MERN stack. Users can explore concerts, view details, and book tickets
         through a smooth and modern interface.
       </p>

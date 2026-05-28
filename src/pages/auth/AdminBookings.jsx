@@ -76,7 +76,7 @@ function AdminBookings() {
               <tr className="text-left">
                 <th className="p-5">User</th>
                 <th className="p-5">Concert</th>
-                <th className="p-5">Quantity</th>
+                <th className="p-5">Seats</th>
                 <th className="p-5">Total</th>
                 <th className="p-5">Status</th>
                 <th className="p-5">Actions</th>
@@ -119,7 +119,7 @@ function AdminBookings() {
                       </div>
                     </td>
 
-                    <td className="p-5">{booking.quantity}</td>
+                    <td className="p-5">{booking.seats?.join(", ") || "No seats"}</td>
 
                     <td className="p-5">€{booking.totalPrice}</td>
 
@@ -168,7 +168,7 @@ function AdminBookings() {
               <div className="mt-4 space-y-1 text-sm text-zinc-400">
                 <p>Concert: {booking.concert?.title}</p>
 
-                <p>Quantity: {booking.quantity}</p>
+                <p>Seats: {booking.seats?.join(", ") || "No Seats"}</p>
 
                 <p>Total: €{booking.totalPrice}</p>
               </div>

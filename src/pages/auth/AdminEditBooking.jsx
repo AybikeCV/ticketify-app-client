@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import service from "../../services/index.services";
 import DeleteFunction from "../../components/DeleteFunction";
+import Loader from "../../components/Loader";
 
 function AdminEditBooking() {
   const { id } = useParams();
@@ -14,8 +15,6 @@ function AdminEditBooking() {
   const [showCancel, setShowCancel] = useState(false);
 
   const [loading, setLoading] = useState(true);
-
-  // FETCH BOOKING
 
   useEffect(() => {
     const getBooking = async () => {
@@ -53,26 +52,26 @@ function AdminEditBooking() {
   };
 
   if (loading || !booking) {
-    return (
-      <div className="min-h-screen bg-zinc-950 text-zinc-400 flex items-center justify-center">
-        Loading booking...
-      </div>
-    );
+    return <Loader />;
   }
-
 
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100 p-10">
       <div className="max-w-3xl mx-auto">
-    
         <h1 className="text-4xl font-bold mb-2">Booking Details</h1>
 
         <p className="text-zinc-500 mb-8">
           Manage booking status and cancellation.
         </p>
 
+        <Link
+          to="/dashboard/bookings"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-zinc-800 bg-zinc-900 hover:bg-zinc-800 transition text-sm text-zinc-300 mb-6"
+        >
+          ← Back to Bookings
+        </Link>
+
         <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 space-y-6">
-   
           <div>
             <p className="text-zinc-500 text-sm">User</p>
 
@@ -89,9 +88,11 @@ function AdminEditBooking() {
 
           <div className="grid md:grid-cols-3 gap-4">
             <div className="bg-zinc-950 border border-zinc-800 rounded-xl p-4">
-              <p className="text-zinc-500 text-sm">Quantity</p>
+              <p className="text-zinc-500 text-sm">Seats Selected</p>
 
-              <p className="text-2xl font-bold mt-2">{booking.quantity}</p>
+              <p className="text-2xl font-bold mt-2">
+                {booking.seats?.length || 0}
+              </p>
             </div>
 
             <div className="bg-zinc-950 border border-zinc-800 rounded-xl p-4">

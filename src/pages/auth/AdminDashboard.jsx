@@ -42,7 +42,7 @@ function AdminDashboard() {
             <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 hover:border-[#1B5E4A]/40 transition hover:-translate-y-1">
               <h2 className="text-2xl font-bold">Bookings</h2>
 
-              <p className="text-zinc-500 mt-3">View all reservations</p>
+              <p className="text-zinc-500 mt-3">View all bookings made by users</p>
             </div>
           </Link>
         </div>
