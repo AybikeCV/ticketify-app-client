@@ -110,13 +110,6 @@ function Navbar() {
               </button>
             </>
           )}
-
-         {/* <button
-            onClick={toggleTheme}
-            className="px-3 py-2 rounded-lg border border-zinc-700 bg-zinc-900 text-zinc-100 dark:bg-white dark:text-zinc-900 transition-colors duration-300"
-          >
-            {theme === "dark" ? "☀️ Light" : "🌙 Dark"}
-          </button>*/}
         
         </div>
 
