@@ -117,6 +117,7 @@ function Navbar() {
           >
             {theme === "dark" ? "☀️ Light" : "🌙 Dark"}
           </button>*/}
+        
         </div>
 
         {/* small screen button */}
