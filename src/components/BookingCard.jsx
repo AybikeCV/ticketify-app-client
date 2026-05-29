@@ -60,7 +60,7 @@ function BookingCard({ booking, refreshBookings }) {
           </p>
         </div>
 
-        {/* 🚨 DELETED CONCERT MESSAGE */}
+
         {isDeletedConcert && (
           <div className="mt-4 p-4 rounded-lg border border-red-500/30 bg-red-500/10 text-red-400 text-sm">
             This concert is no longer available. Your booking has been cancelled
@@ -68,7 +68,7 @@ function BookingCard({ booking, refreshBookings }) {
           </div>
         )}
 
-        {/* BUTTON */}
+
         {booking.status === "confirmed" && !isDeletedConcert && (
           <button
             onClick={() => setShowCancel(true)}
@@ -79,7 +79,7 @@ function BookingCard({ booking, refreshBookings }) {
         )}
       </div>
 
-      {/* MODAL */}
+  
       {showCancel && (
         <DeleteFunction
           isOpen={showCancel}
