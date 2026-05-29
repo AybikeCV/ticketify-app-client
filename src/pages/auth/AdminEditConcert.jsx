@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { ConcertContext } from "../../contexts/concertapi.context";
 import { useParams, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import service from "../../services/index.services";
@@ -9,6 +10,7 @@ function AdminEditConcert() {
 
   const [loading, setLoading] = useState(false);
   const [allVenues, setAllVenues] = useState([]);
+  const { setAllConcerts } = useContext(ConcertContext);
 
   const [form, setForm] = useState({
     title: "",
@@ -39,7 +41,6 @@ function AdminEditConcert() {
     getConcert();
   }, [id]);
 
-
   useEffect(() => {
     const getVenues = async () => {
       try {
@@ -53,7 +54,6 @@ function AdminEditConcert() {
     getVenues();
   }, []);
 
-
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -63,9 +63,6 @@ function AdminEditConcert() {
     }));
   };
 
- 
-  // IMAGE UPLOAD
- 
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     const data = new FormData();
@@ -99,25 +96,30 @@ function AdminEditConcert() {
       setLoading(true);
 
       await service.patch(`/concerts/${id}`, form);
+      const res = await service.patch(`/concerts/${id}`, form);
+
+      const updatedConcert = res.data;
+      setAllConcerts((prev) =>
+        prev.map((c) => (c._id === id ? updatedConcert : c)),
+      );
 
       toast.success("Concert updated");
-
       navigate("/dashboard/concerts");
     } catch (err) {
-      toast.error("Update failed");
+  console.log(err.response?.data || err);
+
+  toast.error(
+    err.response?.data?.errorMessage || "Update failed"
+  );
     } finally {
       setLoading(false);
     }
   };
 
   return (
-     <div className="min-h-screen bg-zinc-950 text-zinc-100 p-10">
+    <div className="min-h-screen bg-zinc-950 text-zinc-100 p-10">
       <div className="max-w-4xl mx-auto">
-
-        {/* HEADER */}
-        <h1 className="text-4xl font-bold">
-          Edit Concert
-        </h1>
+        <h1 className="text-4xl font-bold">Edit Concert</h1>
         <p className="text-zinc-400 mb-8">
           Update concert details and settings
         </p>
@@ -126,15 +128,12 @@ function AdminEditConcert() {
           onSubmit={handleSubmit}
           className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 space-y-10"
         >
-
-          {/* ================= BASIC INFO ================= */}
           <section>
             <h2 className="text-[#1B5E4A] font-semibold mb-4">
               🎤 Basic Information
             </h2>
 
             <div className="space-y-4">
-
               <input
                 name="title"
                 value={form.title}
@@ -161,14 +160,12 @@ function AdminEditConcert() {
             </div>
           </section>
 
-          {/* ================= EVENT DETAILS ================= */}
           <section>
             <h2 className="text-[#1B5E4A] font-semibold mb-4">
               📍 Event Details
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-
               <input
                 type="date"
                 name="date"
@@ -184,18 +181,15 @@ function AdminEditConcert() {
                 placeholder="Doors open (e.g. 18:30)"
                 className="p-3 bg-zinc-950 border border-zinc-800 rounded-xl"
               />
-
             </div>
           </section>
 
-          {/* ================= PRICING ================= */}
           <section>
             <h2 className="text-[#1B5E4A] font-semibold mb-4">
               💰 Pricing & Capacity
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-
               <input
                 type="number"
                 name="price"
@@ -213,15 +207,11 @@ function AdminEditConcert() {
                 placeholder="Total seats"
                 className="p-3 bg-zinc-950 border border-zinc-800 rounded-xl"
               />
-
             </div>
           </section>
 
-          {/* ================= STATUS ================= */}
           <section>
-            <h2 className="text-[#1B5E4A] font-semibold mb-4">
-              ⚙ Status
-            </h2>
+            <h2 className="text-[#1B5E4A] font-semibold mb-4">⚙ Status</h2>
 
             <select
               name="status"
@@ -236,36 +226,31 @@ function AdminEditConcert() {
             </select>
           </section>
 
-          {/* ================= MEDIA ================= */}
           <section>
-            <h2 className="text-[#1B5E4A] font-semibold mb-4">
-              🖼 Media
-            </h2>
+            <h2 className="text-[#1B5E4A] font-semibold mb-4">🖼 Media</h2>
 
             {form.image && (
-  <img
-    key={form.image}
-    src={form.image}
-    className="w-full h-64 object-cover rounded-xl mb-4"
-  />
-)}
+              <img
+                key={form.image}
+                src={form.image}
+                className="w-full h-64 object-cover rounded-xl mb-4"
+              />
+            )}
 
             <input
-  type="file"
-  accept="image/*"
-  className="w-full"
-  onChange={handleImageUpload}
-/>
+              type="file"
+              accept="image/*"
+              className="w-full"
+              onChange={handleImageUpload}
+            />
           </section>
 
-          {/* ================= SAVE ================= */}
           <button
             disabled={loading}
             className="w-full py-3 rounded-xl bg-[#1B5E4A] hover:bg-[#164a3a] font-semibold"
           >
             {loading ? "Updating..." : "Save Changes"}
           </button>
-
         </form>
       </div>
     </div>
