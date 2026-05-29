@@ -2,6 +2,7 @@ import "../index.css";
 import service from "../services/index.services";
 import { useEffect, useState } from "react";
 import VenueCard from "../components/VenueCard";
+import Loader from "../components/Loader"
 
 function AllVenues() {
   const [allVenues, setAllVenues] = useState([]);
@@ -22,9 +23,7 @@ function AllVenues() {
   };
 
   if (!allVenues.length) {
-    return (
-      <div className="text-center py-20 text-zinc-400">No venues available</div>
-    );
+    return <Loader/>
   }
 
   const safeVenues = Array.isArray(allVenues) ? allVenues : [];
